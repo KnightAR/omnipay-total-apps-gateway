@@ -22,7 +22,6 @@ class VaultAchCreateRequest extends AuthorizeRequest
     public function getData()
     {
         $this->validate('currency');
-        
         $data = $this->getBaseData();
         unset($data['type']);
         $data['customer_vault'] = $this->getType();

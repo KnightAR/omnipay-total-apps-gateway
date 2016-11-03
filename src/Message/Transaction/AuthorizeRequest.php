@@ -29,7 +29,6 @@ class AuthorizeRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('amount');
-
         $data = $this->getBaseData();
 
         $data['orderid'] = $this->getTransactionId();

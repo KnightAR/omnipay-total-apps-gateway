@@ -147,7 +147,7 @@ class ACH
         
         foreach (func_get_args() as $key) {
             $value = $this->parameters->get($key);
-            if (! isset($value)) {
+            if (!isset($value) || empty($value)) {
                 throw new \InvalidArgumentException("The $key parameter is required");
             }
         }

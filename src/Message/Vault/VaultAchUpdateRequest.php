@@ -28,7 +28,7 @@ class VaultAchUpdateRequest extends VaultAchCreateRequest
         $data['sec_code'] = 'WEB';
         
         $this->setBankCredentials($data);
-        $this->setShippingCredentials($data);
+        $this->setBankShippingCredentials($data);
         $this->setBankHolderCredentials($data);
         
         return $data;
