@@ -217,7 +217,7 @@ class ACH
 
     public function setBankPhone($value)
     {
-        return $this->setParameter('bankPhone', $value);
+        return $this->setParameter('bankPhone', preg_replace('/\D/', '', $value));
     }
     
     public function getBankAddress()
@@ -422,7 +422,7 @@ class ACH
 
     public function setBillingPhone($value)
     {
-        return $this->setParameter('billingPhone', $value);
+        return $this->setParameter('billingPhone', preg_replace('/\D/', '', $value));
     }
 
     public function getBillingFax()
@@ -432,7 +432,7 @@ class ACH
 
     public function setBillingFax($value)
     {
-        return $this->setParameter('billingFax', $value);
+        return $this->setParameter('billingFax', preg_replace('/\D/', '', $value));
     }
     
     public function getShippingName()
@@ -546,7 +546,7 @@ class ACH
 
     public function setShippingPhone($value)
     {
-        return $this->setParameter('shippingPhone', $value);
+        return $this->setParameter('shippingPhone', preg_replace('/\D/', '', $value));
     }
 
     public function getShippingFax()
@@ -556,7 +556,7 @@ class ACH
 
     public function setShippingFax($value)
     {
-        return $this->setParameter('shippingFax', $value);
+        return $this->setParameter('shippingFax', preg_replace('/\D/', '', $value));
     }
     
     public function getAddress1()
@@ -644,8 +644,8 @@ class ACH
     
     public function setPhone($value)
     {
-        $this->setParameter('billingPhone', $value);
-        $this->setParameter('shippingPhone', $value);
+        $this->setParameter('billingPhone', preg_replace('/\D/', '', $value));
+        $this->setParameter('shippingPhone', preg_replace('/\D/', '', $value));
 
         return $this;
     }
@@ -657,8 +657,8 @@ class ACH
     
     public function setFax($value)
     {
-        $this->setParameter('billingFax', $value);
-        $this->setParameter('shippingFax', $value);
+        $this->setParameter('billingFax', preg_replace('/\D/', '', $value));
+        $this->setParameter('shippingFax', preg_replace('/\D/', '', $value));
 
         return $this;
     }
