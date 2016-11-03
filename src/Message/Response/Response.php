@@ -62,9 +62,9 @@ class Response extends AbstractResponse
      */
     public function __construct(RequestInterface $request, $raw_data)
     {
-        $data = json_decode($raw_data);
+        parse_str($raw_data, $data);
         $this->raw_data = (string)$raw_data;
-        parent::__construct($request, $data);
+        parent::__construct($request, (object)$data);
     }
     
     /**
@@ -72,7 +72,7 @@ class Response extends AbstractResponse
      */
     public function isSuccessful()
     {
-        return isset($this->data->Response) && !is_string($this->data->Response) && isset($this->data->Response->response) && ((string)$this->data->Response->response) === '1';
+        return isset($this->data->response) && $this->data->response === '1';
     }
 
     /**
@@ -137,7 +137,7 @@ class Response extends AbstractResponse
      */
     public function getResponseText()
     {
-        return ( isset($this->data->Response) && !is_string($this->data->Response) && isset($this->data->Response->responsetext) ) ? $this->data->Response->responsetext : null;
+        return ( isset($this->data->response) && isset($this->data->responsetext) ) ? $this->data->responsetext : null;
     }
 
     /**
@@ -147,7 +147,7 @@ class Response extends AbstractResponse
      */
     public function getCode()
     {
-        return ( isset($this->data->Response) && !is_string($this->data->Response) && isset($this->data->Response->response_code) ) ? (int)$this->data->Response->response_code : null;
+        return ( isset($this->data->response) && isset($this->data->response_code) ) ? (int)$this->data->response_code : null;
     }
     
     /**
@@ -168,6 +168,6 @@ class Response extends AbstractResponse
      */
     public function getCardReference()
     {
-        return ( isset($this->data->Response) && !is_string($this->data->Response) && isset($this->data->Response->customer_hash) ) ? (string) $this->data->Response->customer_hash : null;
+        return ( isset($this->data->response) && isset($this->data->customer_vault_id) ) ? (string) $this->data->customer_vault_id : null;
     }
 }

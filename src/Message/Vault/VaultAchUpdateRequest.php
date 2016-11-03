@@ -19,11 +19,16 @@ class VaultAchUpdateRequest extends VaultAchCreateRequest
      */
     public function getData()
     {
-        $data = parent::getData();
+        $this->validate('currency', 'cardReference');
         
-        $this->validate('cardReference');
-        
+        $data = $this->getBaseData();
+        unset($data['type']);
+        $data['customer_vault'] = $this->getType();
         $data['customer_vault_id'] = $this->getCardReference();
+        
+        $this->setBankCredentials($data);
+        $this->setShippingCredentials($data);
+        $this->setBankHolderCredentials($data);
         
         return $data;
     }

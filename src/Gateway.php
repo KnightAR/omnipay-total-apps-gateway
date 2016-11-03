@@ -222,4 +222,36 @@ class Gateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Subscription\SubscriptionDeleteRequest', $parameters);
     }
+    
+    /**
+     * @param array $parameters
+     * @return Message\Vault\VaultAchCreateRequest
+     * Vault ACH Create = add_customer
+     */
+    public function createACH(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultAchCreateRequest', $parameters);
+    }
+    
+    /**
+     * @param array $parameters
+     * @return Message\Vault\VaultAchUpdateRequest
+     * Vault ACH Update = update_customer
+     */
+    public function updateACH(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultAchUpdateRequest', $parameters);
+    }
+    
+    /**
+     * @param array $parameters
+     * @return Message\Vault\VaultAchDeleteRequest
+     * Vault ACH Delete = delete_customer
+     */
+    public function deleteACH(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultAchDeleteRequest', $parameters);
+    }
+    
+    
 }

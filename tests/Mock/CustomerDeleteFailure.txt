@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Length: 179
+Content-Type: text/plain
+Date: Wed, 25 Jun 2014 10:55:48 GMT
+
+response=3&responsetext=Invalid Customer Vault Id REFID:3193372181&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=300&customer_vault_id=866339168

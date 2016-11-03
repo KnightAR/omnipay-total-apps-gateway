@@ -144,6 +144,13 @@ class ACH
         if (empty($this->getBankName())) {
             throw new \InvalidArgumentException('The bank name is required.');
         }
+        
+        foreach (func_get_args() as $key) {
+            $value = $this->parameters->get($key);
+            if (! isset($value)) {
+                throw new \InvalidArgumentException("The $key parameter is required");
+            }
+        }
     }
 
     public function getAccountNumber()
@@ -201,6 +208,26 @@ class ACH
     public function setBankName($value)
     {
         return $this->setParameter('bankName', $value);
+    }
+    
+    public function getBankPhone()
+    {
+        return $this->getParameter('bankPhone');
+    }
+
+    public function setBankPhone($value)
+    {
+        return $this->setParameter('bankPhone', $value);
+    }
+    
+    public function getBankAddress()
+    {
+        return $this->getParameter('bankAddress');
+    }
+
+    public function setBankAddress($value)
+    {
+        return $this->setParameter('bankAddress', $value);
     }
 
     public function getFirstName()
@@ -398,6 +425,16 @@ class ACH
         return $this->setParameter('billingPhone', $value);
     }
 
+    public function getBillingFax()
+    {
+        return $this->getParameter('billingFax');
+    }
+
+    public function setBillingFax($value)
+    {
+        return $this->setParameter('billingFax', $value);
+    }
+    
     public function getShippingName()
     {
         return trim($this->getShippingFirstName() . ' ' . $this->getShippingLastName());
@@ -512,6 +549,16 @@ class ACH
         return $this->setParameter('shippingPhone', $value);
     }
 
+    public function getShippingFax()
+    {
+        return $this->getParameter('shippingFax');
+    }
+
+    public function setShippingFax($value)
+    {
+        return $this->setParameter('shippingFax', $value);
+    }
+    
     public function getAddress1()
     {
         return $this->getParameter('billingAddress1');
@@ -594,11 +641,24 @@ class ACH
     {
         return $this->getParameter('billingPhone');
     }
-
+    
     public function setPhone($value)
     {
         $this->setParameter('billingPhone', $value);
         $this->setParameter('shippingPhone', $value);
+
+        return $this;
+    }
+    
+    public function getFax()
+    {
+        return $this->getParameter('billingFax');
+    }
+    
+    public function setFax($value)
+    {
+        $this->setParameter('billingFax', $value);
+        $this->setParameter('shippingFax', $value);
 
         return $this;
     }

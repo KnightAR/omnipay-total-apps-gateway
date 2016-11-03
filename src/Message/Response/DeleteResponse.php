@@ -12,6 +12,6 @@ class DeleteResponse extends Response
      */
     public function isSuccessful()
     {
-        return isset($this->data->Response) && is_bool($this->data->Response) && $this->data->Response === true;
+        return isset($this->data->response) && $this->data->response == 1;
     }
 }

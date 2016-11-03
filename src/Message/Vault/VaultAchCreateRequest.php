@@ -13,7 +13,7 @@ class VaultAchCreateRequest extends AuthorizeRequest
     {
         return 'add_customer';
     }
-        
+    
     /**
      * @return Array
      * @throws InvalidCreditCardException
@@ -21,6 +21,8 @@ class VaultAchCreateRequest extends AuthorizeRequest
      */
     public function getData()
     {
+        $this->validate('currency');
+        
         $data = $this->getBaseData();
         unset($data['type']);
         $data['customer_vault'] = $this->getType();
@@ -41,7 +43,7 @@ class VaultAchCreateRequest extends AuthorizeRequest
         
         $payee = $this->getBankAccountPayee();
 
-        $payee->validate();
+        $payee->validate('billingAddress1', 'billingCity', 'billingState', 'billingPostcode', 'bankName', 'bankAddress', 'bankPhone', 'billingPhone');
         
         $data['checkname'] = $payee->getName();
         $data['checkaba'] = $payee->getRoutingNumber();
@@ -86,7 +88,7 @@ class VaultAchCreateRequest extends AuthorizeRequest
         $data['address2'] = $payee->getAddress2();
         $data['city'] = $payee->getCity();
         $data['state'] = $payee->getState();
-        $data['zipP'] = $payee->getPostcode();
+        $data['zip'] = $payee->getPostcode();
         $data['phone'] = $payee->getPhone();
         $data['fax'] = $payee->getBillingFax();
         $data['email'] = $payee->getEmail();
