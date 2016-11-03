@@ -19,9 +19,9 @@ abstract class BaseRequestTest extends TestCase
     protected function getBaseOptions()
     {
         return array(
-            'processorId'    => 'abcdefg1234567',
-            'token'          => '6ef44f261a4a1595cd377d3ca7b57b92',
-            'testMode'       => true,
+            'username' => 'abcdefg1234567',
+            'password' => '6ef44f261a4a1595cd377d3ca7b57b92',
+            'testMode' => true
         );
     }
 }

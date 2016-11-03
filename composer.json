@@ -11,12 +11,6 @@
         "purchase",
         "mojopay"
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github-awolacademy:awolacademy/omnipay-total-apps-gateway.git"
-        }
-    ],
     "homepage": "https://github.com/awolacademy/omnipay-total-apps-gateway",
     "license": "MIT",
     "authors": [

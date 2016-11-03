@@ -36,8 +36,8 @@ class AuthorizeRequestTest extends BaseRequestTest
         $data = $this->request->getData();
 
         $this->assertSame($this->expectedType, (string)$data['type']);
-        $this->assertSame('6ef44f261a4a1595cd377d3ca7b57b92', (string)$data['token']);
-        $this->assertSame('abcdefg1234567', (string)$data['processorId']);
+        $this->assertSame('6ef44f261a4a1595cd377d3ca7b57b92', (string)$data['password']);
+        $this->assertSame('abcdefg1234567', (string)$data['username']);
     }
 
     public function testTransactionData()

@@ -4,6 +4,7 @@ namespace Omnipay\TotalAppsGateway\Message;
 
 use Omnipay\Common\Message\AbstractRequest as BaseAbstractRequest;
 use Omnipay\TotalAppsGateway\Message\Response\Response;
+use Omnipay\TotalAppsGateway\ACH;
 
 /**
  * Abstract Request
@@ -13,12 +14,12 @@ abstract class AbstractRequest extends BaseAbstractRequest
     /**
      * @var string
      */
-    protected $liveEndpoint = 'https://core.mojopay.com/merchantapi';
+    protected $liveEndpoint = 'https://secure.total-apps-gateway.com/api/transact.php';
 
     /**
      * @var string
      */
-    protected $testEndpoint = 'https://stagingcore.mojopay.com:80/merchantapi';
+    protected $testEndpoint = 'https://secure.total-apps-gateway.com/api/transact.php';
 
     /**
      * @return string
@@ -26,20 +27,53 @@ abstract class AbstractRequest extends BaseAbstractRequest
     abstract public function getType();
 
     /**
-     * @return $this
+     * Get the gateway username
+     *
+     * @return string
      */
-    public function getProcessorId()
+    public function getUsername()
     {
-        return $this->getParameter('processorId');
+        return $this->getParameter('username');
+    }
+
+    /**
+     * Set the gateway username
+     *
+     * @return AbstractRestRequest provides a fluent interface.
+     */
+    public function setUsername($value)
+    {
+        return $this->setParameter('username', $value);
+    }
+
+    /**
+    * Get the gateway password
+    *
+    * @return string
+    */
+    public function getPassword()
+    {
+        return $this->getParameter('password');
+    }
+
+    /**
+    * Set the gateway password
+    *
+    * @return string
+    */
+    public function setPassword($value)
+    {
+        return $this->setParameter('password', $value);
     }
     
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setProcessorId($value)
+    public function getBankAccountPayee()
     {
-        return $this->setParameter('processorId', $value);
+        return $this->getParameter('bankAccountPayee');
+    }
+    
+    public function setBankAccountPayee($value)
+    {
+        return $this->setParameter('bankAccountPayee', $value);
     }
 
     /**
@@ -47,12 +81,12 @@ abstract class AbstractRequest extends BaseAbstractRequest
      */
     public function getBaseData()
     {
-        $this->validate('token', 'processorId');
+        $this->validate('username', 'password');
         
         $data = array();
         $data['type'] = $this->getType();
-        $data['token'] = $this->getToken();
-        $data['processorId'] = $this->getProcessorId();
+        $data['username'] = $this->getUsername();
+        $data['password'] = $this->getPassword();
         return $data;
     }
 

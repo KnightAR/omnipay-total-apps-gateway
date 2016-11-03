@@ -37,52 +37,72 @@ class Gateway extends AbstractGateway
         return 'TotalAppsGateway';
     }
 
-    /**
+   /**
+     * Get the gateway default parameters
+     *
      * @return array
      */
     public function getDefaultParameters()
     {
         return array(
-            'token'          => '',
-            'processorId'    => '',
-            'testMode'       => false
+            'username' => '',
+            'password' => '',
+            'testMode' => false
         );
     }
 
     /**
+     * Get the gateway username
+     *
      * @return string
      */
-    public function getToken()
+    public function getUsername()
     {
-        return $this->getParameter('token');
+        return $this->getParameter('username');
     }
 
     /**
-     * @param string $value
-     * @return $this
+     * Set the gateway username
+     *
+     * @param string username
+     * @return interface.
      */
-    public function setToken($value)
+    public function setUsername($value)
     {
-        return $this->setParameter('token', $value);
+        return $this->setParameter('username', $value);
     }
 
     /**
-     * @return $this
+     * Set the getway password
+     *
+     * @param string password
+     * @return interface
      */
-    public function getProcessorId()
+    public function setPassword($value)
     {
-        return $this->getParameter('processorId');
+        return $this->setParameter('password', $value);
     }
 
     /**
-     * @param string $value
-     * @return $this
+     * Get the gateway password
+     *
+     * @return string
      */
-    public function setProcessorId($value)
+    public function getPassword()
     {
-        return $this->setParameter('processorId', $value);
+        return $this->getParameter('password');
     }
 
+    public function setBankAccountPayor($value)
+    {
+        return $this->setParameter('bankAccountPayor', $value);
+    }
+    
+    public function getBankAccountPayor()
+    {
+        return $this->getParameter('bankAccountPayor');
+    }
+    
     /**
      * @param array $parameters
      * @return Message\Transaction\AuthorizeRequest

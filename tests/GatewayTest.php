@@ -31,8 +31,8 @@ class GatewayTest extends GatewayTestCase
 
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
 
-        $this->gateway->setProcessorId('abcdefg1234567');
-        $this->gateway->setToken('6ef44f261a4a1595cd377d3ca7b57b92');
+        $this->gateway->setUsername('abcdefg1234567');
+        $this->gateway->setPassword('6ef44f261a4a1595cd377d3ca7b57b92');
         $this->gateway->setTestMode(true);        
 
         $this->purchaseOptions = array(
@@ -70,8 +70,8 @@ class GatewayTest extends GatewayTestCase
 
     public function testGatewaySettersGetters()
     {
-        $this->assertSame('abcdefg1234567', $this->gateway->getProcessorId());
-        $this->assertSame('6ef44f261a4a1595cd377d3ca7b57b92', $this->gateway->getToken());
+        $this->assertSame('abcdefg1234567', $this->gateway->getUsername());
+        $this->assertSame('6ef44f261a4a1595cd377d3ca7b57b92', $this->gateway->getPassword());
         $this->assertSame(true, $this->gateway->getTestMode());
     }
 
