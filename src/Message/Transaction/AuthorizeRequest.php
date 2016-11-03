@@ -125,7 +125,7 @@ class AuthorizeRequest extends AbstractRequest
         
         $payee = $this->getBankAccountPayee();
 
-        $payee->validate('billingAddress1', 'billingCity', 'billingState', 'billingPostcode', 'bankName', 'bankAddress', 'bankPhone', 'billingPhone');
+        $payee->validate('billingAddress1', 'billingCity', 'billingState', 'billingPostcode', 'bankName', 'bankAddress', 'bankPhone', 'billingPhone', 'billingCountry');
         
         $data['checkname'] = $payee->getName();
         $data['checkaba'] = $payee->getRoutingNumber();
