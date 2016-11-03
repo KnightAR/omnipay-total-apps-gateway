@@ -25,9 +25,9 @@ class AuthorizeCardReferenceRequestTest extends AuthorizeRequestTest
         
         $this->assertSame('auth', (string)$data['type']);
         
-        $this->assertSame('123', (string)$data['orderId']);
+        $this->assertSame('123', (string)$data['orderid']);
         $this->assertSame('12.00', (string)$data['amount']);
-        $this->assertSame('1376993339', (string)$data['customerHash']);
+        $this->assertSame('1376993339', (string)$data['customer_vault_id']);
     }
 
     public function testGetDataCustomerDetails()

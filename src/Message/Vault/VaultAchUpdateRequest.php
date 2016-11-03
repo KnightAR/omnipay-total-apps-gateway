@@ -25,6 +25,7 @@ class VaultAchUpdateRequest extends VaultAchCreateRequest
         unset($data['type']);
         $data['customer_vault'] = $this->getType();
         $data['customer_vault_id'] = $this->getCardReference();
+        $data['sec_code'] = 'WEB';
         
         $this->setBankCredentials($data);
         $this->setShippingCredentials($data);

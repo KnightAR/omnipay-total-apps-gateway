@@ -46,7 +46,7 @@ class AuthorizeRequestTest extends BaseRequestTest
         $card = $this->request->getCard();
         $data = $this->request->getData();
 
-        $this->assertSame('123', (string)$data['orderId']);
+        $this->assertSame('123', (string)$data['orderid']);
         $this->assertSame('12.00', (string)$data['amount']);
         $this->assertSame('USD', (string)$data['currency']);
 

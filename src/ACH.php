@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Omnipay\Common\Helper;
 
 /**
- * Bank Account class
+ * ACH class
  */
 class ACH
 {
@@ -23,7 +23,7 @@ class ACH
     protected $parameters;
 
     /**
-     * Create a new CreditCard object using the specified parameters
+     * Create a new ACH object using the specified parameters
      *
      * @param array $parameters An array of parameters to set on the new object
      */
