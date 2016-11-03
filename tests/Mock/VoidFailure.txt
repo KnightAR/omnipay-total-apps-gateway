@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Length: 242
+Content-Type: application/json
+Date: Wed, 25 Jun 2014 11:37:20 GMT
+
+{"Response":{"response":"3","responsetext":"Only transactions pending settlement can be voided REFID:3188494189","authcode":"","transactionid":"3246978902","avsresponse":"","cvvresponse":"","orderid":"","type":"void","response_code":"300"}}

@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Length: 203
+Content-Type: application/json
+Date: Wed, 25 Jun 2014 10:57:11 GMT
+
+{"Response":{"response":"3","responsetext":"Duplicate transaction REFID:3188339697","authcode":"","transactionid":"","avsresponse":"","cvvresponse":"","orderid":"","type":"auth","response_code":"300"}}

@@ -1,0 +1,7 @@
+build
+.idea
+composer.lock
+vendor
+.coveralls.yml
+.coveralls.yml
+phpunit.xml
