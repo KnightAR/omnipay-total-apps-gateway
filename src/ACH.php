@@ -177,7 +177,7 @@ class ACH
     public function setRoutingNumber($value)
     {
         // strip non-numeric characters
-        return $this->setParameter('routingNumber', preg_replace('/\D/', '', $value));
+        return $this->setParameter('routingNumber', preg_replace('/[^A-Za-z0-9]/', '', $value));
     }
 
     public function getBankAccountType()
