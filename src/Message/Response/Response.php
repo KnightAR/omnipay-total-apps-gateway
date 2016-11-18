@@ -90,8 +90,8 @@ class Response extends AbstractResponse
      */
     public function getTransactionId()
     {
-        return isset($this->data->Response->orderid) && !empty($this->data->Response->orderid) ?
-            (string)$this->data->Response->orderid : null;
+        return isset($this->data->orderid) && !empty($this->data->orderid) ?
+            (string)$this->data->orderid : null;
     }
 
     /**
@@ -101,8 +101,8 @@ class Response extends AbstractResponse
      */
     public function getTransactionReference()
     {
-        return isset($this->data->Response->transactionid) && !empty($this->data->Response->transactionid) ?
-            (string)$this->data->Response->transactionid : null;
+        return isset($this->data->transactionid) && !empty($this->data->transactionid) ?
+            (string)$this->data->transactionid : null;
     }
 
     /**
@@ -117,10 +117,6 @@ class Response extends AbstractResponse
         
         if (!$this->isSuccessful() && !is_null($this->getResponseText())) {
             $errors[] = $this->getResponseText();
-        }
-
-        if (isset($this->data->Response) && is_string($this->data->Response)) {
-            $errors[] = (string) $this->data->Response;
         }
         
         if (empty($errors)) {
