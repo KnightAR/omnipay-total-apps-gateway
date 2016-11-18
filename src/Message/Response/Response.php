@@ -74,6 +74,14 @@ class Response extends AbstractResponse
     {
         return isset($this->data->response) && $this->data->response === '1';
     }
+    
+    /**
+     * @return bool
+     */
+    public function getResponse()
+    {
+        return $this->data->response;
+    }
 
     /**
      * @return bool
