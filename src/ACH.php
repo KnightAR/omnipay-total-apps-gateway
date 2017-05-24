@@ -3,9 +3,12 @@ namespace Omnipay\TotalAppsGateway;
 
 use DateTime;
 use DateTimeZone;
-use Omnipay\Common\Exception\InvalidCreditCardException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Omnipay\Common\Helper;
+
+class InvalidACHException extends \Exception implements \Omnipay\Common\Exception\OmnipayException
+{
+}
 
 /**
  * ACH class
@@ -49,12 +52,12 @@ class ACH
 
         return $this;
     }
-    
+
     public function getAccountHolderTypeBusinessChecking()
     {
         return static::ACCOUNT_HOLDER_TYPE_BUSINESS;
     }
-    
+
     public function getAccountHolderTypePersonalChecking()
     {
         return static::ACCOUNT_HOLDER_TYPE_PERSONAL;
@@ -114,7 +117,7 @@ class ACH
             static::ACCOUNT_HOLDER_TYPE_PERSONAL
         );
     }
-    
+
     /**
      * Validate this bank account. If the bank account is invalid, InvalidArgumentException is thrown.
      *
@@ -122,33 +125,33 @@ class ACH
     public function validate()
     {
         if (!in_array($this->getBankAccountType(), $this->getSupportedAccountType())) {
-            throw new \InvalidArgumentException('The bank account type is not in the supported list.');
+            throw new InvalidACHException('The bank account type is not in the supported list.');
         }
-        
+
         if (!in_array($this->getBankHolderAccountType(), $this->getSupportedHolderAccountType())) {
-            throw new \InvalidArgumentException('The bank holder type is not in the supported list.');
+            throw new InvalidACHException('The bank holder type is not in the supported list.');
         }
-        
+
         if (empty($this->getAccountNumber())) {
-            throw new \InvalidArgumentException('The account number is required.');
+            throw new InvalidACHException('The account number is required.');
         }
-        
+
         if (empty($this->getRoutingNumber())) {
-            throw new \InvalidArgumentException('The routing number is required.');
+            throw new InvalidACHException('The routing number is required.');
         }
-        
+
         if (empty($this->getName())) {
-            throw new \InvalidArgumentException('The account name is required.');
+            throw new InvalidACHException('The account name is required.');
         }
-        
+
         if (empty($this->getBankName())) {
-            throw new \InvalidArgumentException('The bank name is required.');
+            throw new InvalidACHException('The bank name is required.');
         }
-        
+
         foreach (func_get_args() as $key) {
             $value = $this->parameters->get($key);
             if (!isset($value) || empty($value)) {
-                throw new \InvalidArgumentException("The $key parameter is required");
+                throw new InvalidACHException("The $key parameter is required");
             }
         }
     }
@@ -199,7 +202,7 @@ class ACH
     {
         return $this->getParameter('bankHolderAccountType');
     }
-    
+
     public function getBankName()
     {
         return $this->getParameter('bankName');
@@ -209,7 +212,7 @@ class ACH
     {
         return $this->setParameter('bankName', $value);
     }
-    
+
     public function getBankPhone()
     {
         return $this->getParameter('bankPhone');
@@ -219,7 +222,7 @@ class ACH
     {
         return $this->setParameter('bankPhone', preg_replace('/\D/', '', $value));
     }
-    
+
     public function getBankAddress()
     {
         return $this->getParameter('bankAddress');
@@ -267,38 +270,6 @@ class ACH
         $this->setShippingName($value);
 
         return $this;
-    }
-
-    public function getStartMonth()
-    {
-        return $this->getParameter('startMonth');
-    }
-
-    public function setStartMonth($value)
-    {
-        return $this->setParameter('startMonth', (int)$value);
-    }
-
-    public function getStartYear()
-    {
-        return $this->getParameter('startYear');
-    }
-
-    public function setStartYear($value)
-    {
-        return $this->setYearParameter('startYear', $value);
-    }
-
-    /**
-     * Get the card start date, using the specified date format string
-     *
-     * @param string $format
-     *
-     * @return string
-     */
-    public function getStartDate($format)
-    {
-        return gmdate($format, gmmktime(0, 0, 0, $this->getStartMonth(), 1, $this->getStartYear()));
     }
 
     public function getIssueNumber()
@@ -434,7 +405,7 @@ class ACH
     {
         return $this->setParameter('billingFax', preg_replace('/\D/', '', $value));
     }
-    
+
     public function getShippingName()
     {
         return trim($this->getShippingFirstName() . ' ' . $this->getShippingLastName());
@@ -558,7 +529,7 @@ class ACH
     {
         return $this->setParameter('shippingFax', preg_replace('/\D/', '', $value));
     }
-    
+
     public function getAddress1()
     {
         return $this->getParameter('billingAddress1');
@@ -641,7 +612,7 @@ class ACH
     {
         return $this->getParameter('billingPhone');
     }
-    
+
     public function setPhone($value)
     {
         $this->setParameter('billingPhone', preg_replace('/\D/', '', $value));
@@ -649,12 +620,12 @@ class ACH
 
         return $this;
     }
-    
+
     public function getFax()
     {
         return $this->getParameter('billingFax');
     }
-    
+
     public function setFax($value)
     {
         $this->setParameter('billingFax', preg_replace('/\D/', '', $value));
