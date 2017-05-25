@@ -26,6 +26,36 @@ class GatewayTest extends GatewayTestCase
      */
     protected $captureOptions;
 
+    public static function getValidACH()
+    {
+        return array(
+            'firstName' => 'Example',
+            'lastName' => 'User',
+            'accountnumber' => '123123123',
+            'routingnumber' => '123123123',
+            'bankName' => "National Bank",
+            'bankAddress' => '123 Billing St',
+            'bankPhone' => '(555) 123-4567',
+            'bankAccountType' => ACH::ACCOUNT_TYPE_CHECKING,
+            'bankHolderAccountType' => ACH::ACCOUNT_HOLDER_TYPE_PERSONAL,
+            'company' => 'DAB2LLC',
+            'billingAddress1' => '123 Billing St',
+            'billingAddress2' => 'Billsville',
+            'billingCity' => 'Billstown',
+            'billingPostcode' => '12345',
+            'billingState' => 'CA',
+            'billingCountry' => 'US',
+            'billingPhone' => '(555) 123-4567',
+            'shippingAddress1' => '123 Shipping St',
+            'shippingAddress2' => 'Shipsville',
+            'shippingCity' => 'Shipstown',
+            'shippingPostcode' => '54321',
+            'shippingState' => 'NY',
+            'shippingCountry' => 'US',
+            'shippingPhone' => '(555) 987-6543',
+        );
+    }
+    
     public function setUp()
     {
         parent::setUp();
@@ -41,6 +71,7 @@ class GatewayTest extends GatewayTestCase
             'orderId'   => '123',
             'card'      => $this->getValidCard(),
         );
+
         $this->captureOptions  = array(
             'amount'               => '10.00',
             'transactionReference' => '3244053957',
@@ -67,6 +98,30 @@ class GatewayTest extends GatewayTestCase
             'orderId'       => '123',
             'cardReference' => '2108887363',
         );
+        
+        
+        /* ACH */
+        $this->ACHCreateReferenceOptions = array(
+            'currency' => 'USD',
+            'bankAccountPayee' => new ACH(GatewayTest::getValidACH())
+        );
+        $this->ACHUpdateReferenceOptions = array(
+            'currency' => 'USD',
+            'bankAccountPayee' => new ACH(GatewayTest::getValidACH()),
+            'cardReference' => '784732899'
+        );
+        $this->ACHDeleteReferenceOptions = array(
+            'cardReference' => '784732899'
+        );
+        $this->creditOptionsRef = array(
+            'amount'        => '10.00',
+            'cardReference' => '784732899'
+        );
+        $this->purchaseACHOptions = array(
+            'amount'    => '10.00',
+            'orderId'   => '123',
+            'bankAccountPayee' => new ACH(GatewayTest::getValidACH())
+        );
     }
 
     public function testGatewaySettersGetters()
@@ -74,6 +129,33 @@ class GatewayTest extends GatewayTestCase
         $this->assertSame('abcdefg1234567', $this->gateway->getUsername());
         $this->assertSame('6ef44f261a4a1595cd377d3ca7b57b92', $this->gateway->getPassword());
         $this->assertSame(true, $this->gateway->getTestMode());
+    }
+
+    public function testAccountPayee() {
+        $ach = new ACH();
+        $this->gateway->setBankAccountPayee($ach);
+        $this->assertSame($ach, $this->gateway->getBankAccountPayee());
+    }
+
+    public function testMerchantEndpoint() {
+        $this->gateway->setMerchantEndpoint('other.endpoint.domain');
+        $this->assertSame('other.endpoint.domain', $this->gateway->getMerchantEndpoint());
+    }
+
+    /**
+     * @expectedException \Omnipay\Common\Exception\InvalidCreditCardException
+     * @expectedExceptionMessage The postcode parameter is required
+     */
+    public function testValidateMissingPostcode()
+    {        
+        $args = array(
+            'amount'    => '10.00',
+            'orderId'   => '123',
+            'card'      => new \Omnipay\Common\CreditCard($this->getValidCard())
+        );
+        $args['card']->setPostcode(null);
+        $this->setMockHttpResponse('CreditACHSuccess.txt');
+        $response = $this->gateway->credit($args)->send();
     }
 
     /*public function testAuthorizeSuccess()
@@ -267,7 +349,8 @@ class GatewayTest extends GatewayTestCase
         $this->assertNull($response->getTransactionId());
         $this->assertNull($response->getCardReference());
     }
-    
+    */
+
     public function testCardCreateSuccess()
     {
         $this->setMockHttpResponse('CardCreateSuccess.txt');
@@ -277,181 +360,135 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('SUCCESS', $response->getResponseText());
-        $this->assertSame('3247070784', $response->getTransactionReference());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
-        $this->assertSame('1376993339', $response->getCardReference());
+        $this->assertSame('784732899', $response->getCardReference());
     }
     
     public function testCardDeleteSuccess()
     {
-        $this->setMockHttpResponse('CardDeleteSuccess.txt');
+        $this->setMockHttpResponse('CardCreateSuccess.txt');
         $response = $this->gateway->deleteCard($this->cardDeleteReferenceOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
+        $this->assertSame('Transaction was approved.', $response->getCodeText());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
-        $this->assertNull($response->getCardReference());
-        
-        $responseData = $response->getData();
-        $this->assertSame(true, $responseData->Response);
+        $this->assertSame('784732899', $response->getCardReference());
     }    
     
     public function testCardUpdateFailure()
     {
-        $this->setMockHttpResponse('CardUpdateFailure.txt');
+        $this->setMockHttpResponse('CardCreateFailure.txt');
         $response = $this->gateway->updateCard($this->cardUpdateReferenceOptions)->send();
 
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
-        $this->assertSame("Customer Hash missing", $response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
+        //$this->assertSame("Customer Hash missing", $response->getMessage());
+        $this->assertSame('Transaction was declined by processor.', $response->getCodeText());
+        $this->assertSame('DECLINED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame(200, $response->getCode());
         $this->assertNull($response->getTransactionId());
         $this->assertNull($response->getCardReference());
-        
-        $responseData = $response->getData();
-        $this->assertSame("Customer Hash missing", $responseData->Response);
+        $this->assertSame('Transaction was declined by processor.; DECLINED', $response->getMessage());
     }
     
     public function testCardUpdateSuccess()
     {
-        $this->setMockHttpResponse('CardUpdateSuccess.txt');
+        $this->setMockHttpResponse('CardCreateSuccess.txt');
         $response = $this->gateway->updateCard($this->cardUpdateReferenceOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('Customer Update Successful', $response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
-        $this->assertSame('1376993339', $response->getCardReference());
+        $this->assertSame('784732899', $response->getCardReference());
     }
-    
-    public function testSubscriptionAddFailure()
-    {
-        $this->setMockHttpResponse('SubscriptionAddFailure.txt');
-        $response = $this->gateway->subscription_add($this->subscriptionAdd)->send();
 
-        $this->assertFalse($response->isSuccessful());
-        $this->assertFalse($response->isRedirect());
-        $this->assertSame("Customer Token does not exist", $response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
-        $this->assertNull($response->getTransactionId());
-        $this->assertNull($response->getCardReference());
-        
-        $responseData = $response->getData();
-        $this->assertSame("Customer Token does not exist", $responseData->Response);
-    }
-    
-    public function testSubscriptionAddSuccess()
+    public function testAchCardCreateSuccess()
     {
-        $this->setMockHttpResponse('SubscriptionAddSuccess.txt');
-        $response = $this->gateway->subscription_add($this->subscriptionAdd)->send();
-        
-        $this->assertSame("20160901", $response->getRequest()->getSubscriptionStartDate('Ymd'));
-        $this->assertTrue($response->isSuccessful());
-        $this->assertFalse($response->isRedirect());
-        $this->assertSame("Subscription created", $response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
-        $this->assertNull($response->getTransactionId());
-        $this->assertNull($response->getCardReference());
-        
-        $responseData = $response->getData();
-        $this->assertSame("Subscription created", $responseData->Response);
-    }
-    
-    public function testSubscriptionDeleteSuccess()
-    {
-        $this->setMockHttpResponse('SubscriptionDeleteSuccess.txt');
-        $response = $this->gateway->subscription_delete($this->subscriptionAdd)->send();
-
-        $this->assertTrue($response->isSuccessful());
-        $this->assertFalse($response->isRedirect());
-        $this->assertSame("Subscription successfully deleted", $response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
-        $this->assertNull($response->getTransactionId());
-        $this->assertNull($response->getCardReference());
-        
-        $responseData = $response->getData();
-        $this->assertSame("Subscription successfully deleted", $responseData->Response);
-    }
-    
-    public function testSubscriptionDeleteFailure()
-    {
-        $this->setMockHttpResponse('SubscriptionDeleteFailure.txt');
-        $response = $this->gateway->subscription_delete($this->subscriptionAdd)->send();
-
-        $this->assertFalse($response->isSuccessful());
-        $this->assertFalse($response->isRedirect());
-        $this->assertSame("Could not find a subscription with those parameters.", $response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
-        $this->assertNull($response->getTransactionId());
-        $this->assertNull($response->getCardReference());
-        
-        $responseData = $response->getData();
-        $this->assertSame("Could not find a subscription with those parameters.", $responseData->Response);
-    }
-    
-    public function testVaultCustomerListSuccess()
-    {
-        $this->setMockHttpResponse('VaultCustomerListSuccess.txt');
-        $response = $this->gateway->listCards(array('lastName' => 'Lis'))->send();
+        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $response = $this->gateway->createACH($this->ACHCreateReferenceOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
+        $this->assertSame('Transaction was approved.', $response->getCodeText());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
-        $this->assertNull($response->getCardReference());
-        $this->assertInternalType('array', $response->getResponse());
-        
-        $data = $response->getResponse();
-        foreach($data as $row) {
-            $this->assertInstanceOf('Omnipay\TotalAppsGateway\Message\Response\VaultCustomerRecordResponse', $row);
-            $this->assertTrue($row->isSuccessful());
-        }
+        $this->assertSame('784732899', $response->getCardReference());
     }
-    
-    public function testVaultCustomerListFailure()
-    {
-        $this->setMockHttpResponse('VaultCustomerListFailure.txt');
-        $response = $this->gateway->listCards(array('lastName' => 'Lis'))->send();
 
-        $this->assertFalse($response->isSuccessful());
+    public function testAchCardUpdateSuccess()
+    {
+        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $response = $this->gateway->updateACH($this->ACHUpdateReferenceOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
-        $this->assertNull($response->getCodeText());
-        $this->assertNull($response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
-        $this->assertNull($response->getCode());
+        $this->assertSame('Transaction was approved.', $response->getCodeText());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
-        $this->assertNull($response->getCardReference());
-        $this->assertNull($response->getResponse());
-    }*/
+        $this->assertSame('784732899', $response->getCardReference());
+    }
+
+    public function testAchCardDeleteSuccess()
+    {
+        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $response = $this->gateway->deleteACH($this->ACHUpdateReferenceOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('Transaction was approved.', $response->getCodeText());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
+        $this->assertNull($response->getTransactionId());
+        $this->assertSame('784732899', $response->getCardReference());
+    }
+
+    public function testCreditSuccess()
+    {
+        $this->setMockHttpResponse('CreditACHSuccess.txt');
+        $this->gateway->setMerchantEndpoint('other.endpoint.domain');
+        $response = $this->gateway->credit($this->creditOptionsRef)->send();
+        
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
+        $this->assertSame('784732899', $response->getCardReference());
+    }
+
+    public function testPurchaseSuccess()
+    {
+        $this->setMockHttpResponse('PurchaseACHSuccess.txt');
+        $response = $this->gateway->purchase($this->purchaseACHOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
+    }
 }

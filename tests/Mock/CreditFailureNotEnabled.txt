@@ -1,6 +1,0 @@
-HTTP/1.1 200 OK
-Content-Length: 207
-Content-Type: application/json
-Date: Wed, 25 Jun 2014 11:40:06 GMT
-
-{"Response":{"response":"3","responsetext":"Credits are not enabled REFID:3188565408","authcode":"","transactionid":"","avsresponse":"","cvvresponse":"","orderid":"","type":"credit","response_code":"300"}}

@@ -1,6 +1,0 @@
-HTTP/1.1 200 OK
-Content-Length: 264
-Content-Type: application/json
-Date: Wed, 25 Jun 2014 11:40:06 GMT
-
-{"Response":{"response":"3","responsetext":"The specified amount of 5.00 exceeds the authorization amount of 1.00 REFID:3188494937","authcode":"","transactionid":"3244053957","avsresponse":"","cvvresponse":"","orderid":"","type":"capture","response_code":"300"}}

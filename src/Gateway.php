@@ -11,6 +11,7 @@ use Guzzle\Http\Client as HttpClient;
 class Gateway extends AbstractGateway
 {
     /**
+     * @codeCoverageIgnore
      * Get the global default HTTP client.
      *
      * @return HttpClient
@@ -93,35 +94,45 @@ class Gateway extends AbstractGateway
         return $this->getParameter('password');
     }
 
-    public function setBankAccountPayor($value)
+    public function setBankAccountPayee($value)
     {
-        return $this->setParameter('bankAccountPayor', $value);
+        return $this->setParameter('bankAccountPayee', $value);
     }
-    
-    public function getBankAccountPayor()
+
+    public function getBankAccountPayee()
     {
-        return $this->getParameter('bankAccountPayor');
+        return $this->getParameter('bankAccountPayee');
     }
-    
+
+    public function setMerchantEndpoint($value)
+    {
+        return $this->setParameter('merchantEndpoint', $value);
+    }
+
+    public function getMerchantEndpoint()
+    {
+        return $this->getParameter('merchantEndpoint');
+    }
+
     /**
      * @param array $parameters
      * @return Message\Transaction\AuthorizeRequest
      * Authorize = auth
      */
-    /*public function authorize(array $parameters = array())
+    public function authorize(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Transaction\AuthorizeRequest', $parameters);
-    }*/
+    }
 
     /**
      * @param array $parameters
      * @return Message\Transaction\PurchaseRequest
      * Purchase = sale
      */
-    /*public function purchase(array $parameters = array())
+    public function purchase(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Transaction\PurchaseRequest', $parameters);
-    }*/
+    }
     
     /**
      * @param array $parameters
@@ -138,120 +149,91 @@ class Gateway extends AbstractGateway
      * @return Message\Transaction\RefundRequest
      * Refund = refund
      */
-    /*public function refund(array $parameters = array())
+    public function refund(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Transaction\RefundRequest', $parameters);
-    }*/
+    }
     
     /**
      * @param array $parameters
      * @return Message\Vault\VaultCreateRequest
      * Vault Create = auth
      */
-    /*public function createCard(array $parameters = array())
+    public function createCard(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultCreateRequest', $parameters);
-    }*/
+    }
     
     /**
      * @param array $parameters
      * @return Message\Vault\VaultDeleteRequest
      * Vault Delete = delete
      */
-    /*public function deleteCard(array $parameters = array())
+    public function deleteCard(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultDeleteRequest', $parameters);
-    }*/
+    }
     
     /**
      * @param array $parameters
      * @return Message\Vault\VaultUpdateRequest
      * Vault Update = update
      */
-    /*public function updateCard(array $parameters = array())
+    public function updateCard(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultUpdateRequest', $parameters);
-    }*/
-    
-    /**
-     * @param array $parameters
-     * @return Message\Vault\VaultCustomerListRecordsRequest
-     * Vault List = list_customer
-     */
-    /*public function listCards(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultCustomerListRecordsRequest', $parameters);
-    }*/
-    
+    }
+
     /**
      * @param array $parameters
      * @return Message\Transaction\CaptureRequest
      * Capture = capture
      */
-    /*public function capture(array $parameters = array())
+    public function capture(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Transaction\CaptureRequest', $parameters);
-    }*/
+    }
     
     /**
      * @param array $parameters
      * @return Message\Transaction\VoidRequest
      * Void = void
      */
-    /*public function void(array $parameters = array())
+    public function void(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Transaction\VoidRequest', $parameters);
-    }*/
-    
+    }
+
     /**
+     * DEPRECATED: Use createCard() with bankAccountPayee argument
      * @param array $parameters
-     * @return Message\Subscription\SubscriptionAddRequest
-     * Subscription Add = sub_add
-     */
-    /*public function subscription_add(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Subscription\SubscriptionAddRequest', $parameters);
-    }*/
-    
-    /**
-     * @param array $parameters
-     * @return Message\Subscription\SubscriptionDeleteRequest
-     * Subscription Add = delete_sub
-     */
-    /*public function subscription_delete(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Subscription\SubscriptionDeleteRequest', $parameters);
-    }*/
-    
-    /**
-     * @param array $parameters
-     * @return Message\Vault\VaultAchCreateRequest
+     * @return Message\Vault\VaultCreateRequest
      * Vault ACH Create = add_customer
      */
     public function createACH(array $parameters = array())
     {
-        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultAchCreateRequest', $parameters);
+        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultCreateRequest', $parameters);
     }
     
     /**
+     * DEPRECATED: Use updateCard() with bankAccountPayee argument
      * @param array $parameters
-     * @return Message\Vault\VaultAchUpdateRequest
+     * @return Message\Vault\VaultUpdateRequest
      * Vault ACH Update = update_customer
      */
     public function updateACH(array $parameters = array())
     {
-        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultAchUpdateRequest', $parameters);
+        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultUpdateRequest', $parameters);
     }
     
     /**
+     * DEPRECATED: Use deleteCard() with bankAccountPayee argument
      * @param array $parameters
-     * @return Message\Vault\VaultAchDeleteRequest
+     * @return Message\Vault\VaultDeleteRequest
      * Vault ACH Delete = delete_customer
      */
     public function deleteACH(array $parameters = array())
     {
-        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultAchDeleteRequest', $parameters);
+        return $this->createRequest('\Omnipay\TotalAppsGateway\Message\Vault\VaultDeleteRequest', $parameters);
     }
-    
-    
 }

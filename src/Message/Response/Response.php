@@ -13,7 +13,6 @@ class Response extends AbstractResponse
     public static $responseCodes = array(
         100 => 'Transaction was approved.',
         200 => 'Transaction was declined by processor.',
-        200 => 'Transaction was declined by processor.',
         201 => 'Do not honor.',
         202 => 'Insufficient funds.',
         203 => 'Over limit.',
@@ -72,7 +71,7 @@ class Response extends AbstractResponse
      */
     public function isSuccessful()
     {
-        return isset($this->data->response) && $this->data->response === '1';
+        return isset($this->data->response) && $this->getResponse() === '1';
     }
     
     /**

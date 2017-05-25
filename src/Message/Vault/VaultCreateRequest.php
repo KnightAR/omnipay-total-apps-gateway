@@ -11,7 +11,7 @@ class VaultCreateRequest extends AuthorizeRequest
      */
     public function getType()
     {
-        return 'create';
+        return 'add_customer';
     }
     
     /**
@@ -22,11 +22,21 @@ class VaultCreateRequest extends AuthorizeRequest
     public function getData()
     {
         $data = $this->getBaseData();
+        if ($this->getBankAccountPayee()) {
+            $this->validate('currency');
+            unset($data['type']);
+            $data['customer_vault'] = $this->getType();
+            $data['sec_code'] = 'WEB';
 
-        $this->setCardCredentials($data);
-        $this->setShippingCredentials($data);
-        $this->setCardHolderCredentials($data);
-        
+            $this->setBankCredentials($data);
+            $this->setBankShippingCredentials($data);
+            $this->setBankHolderCredentials($data);
+        } else {
+            $this->setCardCredentials($data);
+            $this->setShippingCredentials($data);
+            $this->setCardHolderCredentials($data);
+        }
+
         return $data;
     }
 }

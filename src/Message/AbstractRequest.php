@@ -14,12 +14,12 @@ abstract class AbstractRequest extends BaseAbstractRequest
     /**
      * @var string
      */
-    protected $liveEndpoint = 'https://secure.total-apps-gateway.com/api/transact.php';
+    protected $liveEndpoint = '/api/transact.php';
 
     /**
      * @var string
      */
-    protected $testEndpoint = 'https://secure.total-apps-gateway.com/api/transact.php';
+    protected $testEndpoint = '/api/transact.php';
 
     /**
      * @return string
@@ -76,6 +76,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->setParameter('bankAccountPayee', $value);
     }
 
+    public function setMerchantEndpoint($value)
+    {
+        return $this->setParameter('merchantEndpoint', $value);
+    }
+
+    public function getMerchantEndpoint()
+    {
+        return $this->getParameter('merchantEndpoint');
+    }
+
     /**
      * @return Array
      */
@@ -106,7 +116,11 @@ abstract class AbstractRequest extends BaseAbstractRequest
      */
     protected function getEndpoint()
     {
-        return $this->getTestMode() ? $this->testEndpoint : $this->liveEndpoint;
+        $endpoint = 'secure.total-apps-gateway.com';
+        if ($this->getMerchantEndpoint()) {
+            $endpoint = $this->getMerchantEndpoint();
+        }
+        return sprintf('https://%s%s', $endpoint, ($this->getTestMode() ? $this->testEndpoint : $this->liveEndpoint));
     }
 
     /**

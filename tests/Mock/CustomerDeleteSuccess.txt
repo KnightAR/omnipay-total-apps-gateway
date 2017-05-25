@@ -1,6 +1,0 @@
-HTTP/1.1 200 OK
-Content-Length: 125
-Content-Type: text/plain
-Date: Wed, 25 Jun 2014 10:55:48 GMT
-
-response=1&responsetext=Customer Deleted&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=100

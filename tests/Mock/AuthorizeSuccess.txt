@@ -1,6 +1,0 @@
-HTTP/1.1 200 OK
-Content-Length: 190
-Content-Type: application/json
-Date: Wed, 25 Jun 2014 10:55:48 GMT
-
-{"Response":{"response":"1","responsetext":"SUCCESS","authcode":"123456","transactionid":"3244053957","avsresponse":"N","cvvresponse":"N","orderid":"","type":"auth","response_code":"100"}}

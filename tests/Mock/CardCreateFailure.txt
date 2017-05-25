@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Length: 216
+Content-Type: text/plain
+Date: Wed, 25 Jun 2014 10:55:48 GMT
+
+response=2&responsetext=DECLINED&authcode=&transactionid=3348271664&avsresponse=&cvvresponse=&orderid=&type=update&response_code=200

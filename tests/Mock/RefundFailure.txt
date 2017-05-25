@@ -1,6 +1,0 @@
-HTTP/1.1 200 OK
-Content-Length: 230
-Content-Type: application/json
-Date: Wed, 25 Jun 2014 11:37:20 GMT
-
-{"Response":{"response":"3","responsetext":"Invalid Transaction ID / Object ID specified:  REFID:3188495243","authcode":"","transactionid":"","avsresponse":"","cvvresponse":"","orderid":"","type":"refund","response_code":"300"}}

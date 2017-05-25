@@ -12,17 +12,21 @@ class VaultDeleteRequest extends AuthorizeRequest
      */
     public function getType()
     {
-        return 'delete';
+        return 'delete_customer';
     }
     
     /**
      * @return Array
+     * @throws InvalidCreditCardException
+     * @throws InvalidRequestException
      */
     public function getData()
     {
         $this->validate('cardReference');
         $data = $this->getBaseData();
-        $data['customerHash'] = $this->getCardReference();
+        unset($data['type']);
+        $data['customer_vault'] = $this->getType();
+        $data['customer_vault_id'] = $this->getCardReference();
         return $data;
     }
     

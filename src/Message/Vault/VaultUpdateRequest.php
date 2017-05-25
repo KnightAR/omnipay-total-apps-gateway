@@ -19,12 +19,9 @@ class VaultUpdateRequest extends VaultCreateRequest
      */
     public function getData()
     {
-        $data = parent::getData();
-        
         $this->validate('cardReference');
-        
-        $data['customerHash'] = $this->getCardReference();
-        
+        $data = parent::getBaseData();
+        $data['customer_vault_id'] = $this->getCardReference();
         return $data;
     }
 }
