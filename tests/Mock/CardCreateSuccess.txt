@@ -3,4 +3,4 @@ Content-Length: 216
 Content-Type: text/plain
 Date: Wed, 25 Jun 2014 10:55:48 GMT
 
-response=1&responsetext=APPROVED&authcode=&transactionid=3348271664&avsresponse=&cvvresponse=&orderid=&type=add_customer&response_code=100&customer_vault_id=784732899
+response=1&responsetext=Customer%20Added&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=100&customer_vault_id=784732899

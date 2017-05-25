@@ -9,7 +9,7 @@ class VaultUpdateRequest extends VaultCreateRequest
      */
     public function getType()
     {
-        return 'update';
+        return 'update_customer';
     }
     
     /**
@@ -20,7 +20,7 @@ class VaultUpdateRequest extends VaultCreateRequest
     public function getData()
     {
         $this->validate('cardReference');
-        $data = parent::getBaseData();
+        $data = parent::getData();
         $data['customer_vault_id'] = $this->getCardReference();
         return $data;
     }

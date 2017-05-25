@@ -22,10 +22,10 @@ class VaultCreateRequest extends AuthorizeRequest
     public function getData()
     {
         $data = $this->getBaseData();
+        unset($data['type']);
+        $data['customer_vault'] = $this->getType();
         if ($this->getBankAccountPayee()) {
             $this->validate('currency');
-            unset($data['type']);
-            $data['customer_vault'] = $this->getType();
             $data['sec_code'] = 'WEB';
 
             $this->setBankCredentials($data);

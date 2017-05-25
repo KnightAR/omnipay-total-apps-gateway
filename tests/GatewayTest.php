@@ -142,22 +142,6 @@ class GatewayTest extends GatewayTestCase
         $this->assertSame('other.endpoint.domain', $this->gateway->getMerchantEndpoint());
     }
 
-    /**
-     * @expectedException \Omnipay\Common\Exception\InvalidCreditCardException
-     * @expectedExceptionMessage The postcode parameter is required
-     */
-    public function testValidateMissingPostcode()
-    {        
-        $args = array(
-            'amount'    => '10.00',
-            'orderId'   => '123',
-            'card'      => new \Omnipay\Common\CreditCard($this->getValidCard())
-        );
-        $args['card']->setPostcode(null);
-        $this->setMockHttpResponse('CreditACHSuccess.txt');
-        $response = $this->gateway->credit($args)->send();
-    }
-
     /*public function testAuthorizeSuccess()
     {
         $this->setMockHttpResponse('AuthorizeSuccess.txt');
@@ -360,8 +344,8 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('Customer Added', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
         $this->assertSame('784732899', $response->getCardReference());
@@ -369,18 +353,18 @@ class GatewayTest extends GatewayTestCase
     
     public function testCardDeleteSuccess()
     {
-        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $this->setMockHttpResponse('CardDeleteSuccess.txt');
         $response = $this->gateway->deleteCard($this->cardDeleteReferenceOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('Customer Deleted', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
-        $this->assertSame('784732899', $response->getCardReference());
+        $this->assertNull($response->getCardReference());
     }    
     
     public function testCardUpdateFailure()
@@ -393,7 +377,7 @@ class GatewayTest extends GatewayTestCase
         //$this->assertSame("Customer Hash missing", $response->getMessage());
         $this->assertSame('Transaction was declined by processor.', $response->getCodeText());
         $this->assertSame('DECLINED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertNull($response->getTransactionReference());
         $this->assertSame(200, $response->getCode());
         $this->assertNull($response->getTransactionId());
         $this->assertNull($response->getCardReference());
@@ -402,15 +386,15 @@ class GatewayTest extends GatewayTestCase
     
     public function testCardUpdateSuccess()
     {
-        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $this->setMockHttpResponse('CardUpdateSuccess.txt');
         $response = $this->gateway->updateCard($this->cardUpdateReferenceOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('Customer Update Successful', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
         $this->assertSame('784732899', $response->getCardReference());
@@ -425,8 +409,8 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('Customer Added', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
         $this->assertSame('784732899', $response->getCardReference());
@@ -434,15 +418,15 @@ class GatewayTest extends GatewayTestCase
 
     public function testAchCardUpdateSuccess()
     {
-        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $this->setMockHttpResponse('CardUpdateSuccess.txt');
         $response = $this->gateway->updateACH($this->ACHUpdateReferenceOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('Customer Update Successful', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
         $this->assertSame('784732899', $response->getCardReference());
@@ -450,18 +434,18 @@ class GatewayTest extends GatewayTestCase
 
     public function testAchCardDeleteSuccess()
     {
-        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $this->setMockHttpResponse('CardDeleteSuccess.txt');
         $response = $this->gateway->deleteACH($this->ACHUpdateReferenceOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('Transaction was approved.', $response->getCodeText());
-        $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('Customer Deleted', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertNull($response->getTransactionId());
-        $this->assertSame('784732899', $response->getCardReference());
+        $this->assertNull($response->getCardReference());
     }
 
     public function testCreditSuccess()
@@ -473,7 +457,7 @@ class GatewayTest extends GatewayTestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
-        $this->assertSame('APPROVED', $response->getResponseText());
+        $this->assertSame('SUCCESS', $response->getResponseText());
         $this->assertSame('3348271664', $response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertSame('784732899', $response->getCardReference());

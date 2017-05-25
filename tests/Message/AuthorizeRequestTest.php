@@ -50,9 +50,9 @@ class AuthorizeRequestTest extends BaseRequestTest
         $this->assertSame('12.00', (string)$data['amount']);
         $this->assertSame('USD', (string)$data['currency']);
 
-        $this->assertSame($card->getNumber(), (string)$data['creditCardNumber']);
-        $this->assertSame($card->getExpiryDate('my'), $data['expirationDate']);
-        $this->assertSame((string)$card->getCvv(), (string)$data['cardSecurityCode']);
+        $this->assertSame($card->getNumber(), (string)$data['ccnumber']);
+        $this->assertSame($card->getExpiryDate('my'), $data['ccexp']);
+        $this->assertSame((string)$card->getCvv(), (string)$data['cvv']);
     }
 
     public function testGetDataCustomerDetails()
@@ -60,31 +60,31 @@ class AuthorizeRequestTest extends BaseRequestTest
         /** @var CreditCard $card */
         $card = $this->request->getCard();
         $data = $this->request->getData();
-        
-        $this->assertSame((string)$card->getShippingFirstName(), (string)$data['firstNameShipping']);
-        $this->assertSame((string)$card->getShippingLastName(), (string)$data['lastNameShipping']);
-        $this->assertSame((string)$card->getShippingCompany(), (string)$data['companyShipping']);
-        $this->assertSame((string)$card->getShippingCountry(), (string)$data['countryShipping']);
-        $this->assertSame((string)$card->getShippingAddress1(), (string)$data['addressShipping']);
-        $this->assertSame((string)$card->getShippingAddress2(), (string)$data['addressContShipping']);
-        $this->assertSame((string)$card->getShippingCity(), (string)$data['cityShipping']);
-        $this->assertSame((string)$card->getShippingState(), (string)$data['stateProvinceShipping']);
-        $this->assertSame((string)$card->getShippingPostcode(), (string)$data['zipPostalCodeShipping']);
-        $this->assertSame((string)$card->getShippingPhone(), (string)$data['phoneNumberShipping']);
-        $this->assertSame((string)$card->getShippingFax(), (string)$data['faxNumberShipping']);
-        $this->assertSame((string)$card->getEmail(), (string)$data['emailAddressShipping']);
-        
-        $this->assertSame((string)$card->getFirstName(), (string)$data['firstNameCard']);
-        $this->assertSame((string)$card->getLastName(), (string)$data['lastNameCard']);
-        $this->assertSame((string)$card->getCompany(), (string)$data['companyCard']);
-        $this->assertSame((string)$card->getCountry(), (string)$data['countryCard']);
-        $this->assertSame((string)$card->getAddress1(), (string)$data['addressCard']);
-        $this->assertSame((string)$card->getAddress2(), (string)$data['addressContCard']);
-        $this->assertSame((string)$card->getCity(), (string)$data['cityCard']);
-        $this->assertSame((string)$card->getState(), (string)$data['stateProvinceCard']);
-        $this->assertSame((string)$card->getPostcode(), (string)$data['zipPostalCodeCard']);
-        $this->assertSame((string)$card->getPhone(), (string)$data['phoneNumberCard']);
-        $this->assertSame((string)$card->getBillingFax(), (string)$data['faxNumberCard']);
-        $this->assertSame((string)$card->getEmail(), (string)$data['emailAddressCard']);
+
+        $this->assertSame((string)$card->getShippingFirstName(), (string)$data['shipping_firstname']);
+        $this->assertSame((string)$card->getShippingLastName(), (string)$data['shipping_lastname']);
+        $this->assertSame((string)$card->getShippingCompany(), (string)$data['shipping_company']);
+        $this->assertSame((string)$card->getShippingCountry(), (string)$data['shipping_country']);
+        $this->assertSame((string)$card->getShippingAddress1(), (string)$data['shipping_address1']);
+        $this->assertSame((string)$card->getShippingAddress2(), (string)$data['shipping_address2']);
+        $this->assertSame((string)$card->getShippingCity(), (string)$data['shipping_city']);
+        $this->assertSame((string)$card->getShippingState(), (string)$data['shipping_state']);
+        $this->assertSame((string)$card->getShippingPostcode(), (string)$data['shipping_zip']);
+        $this->assertSame((string)$card->getShippingPhone(), (string)$data['shipping_phone']);
+        $this->assertSame((string)$card->getShippingFax(), (string)$data['shipping_fax']);
+        $this->assertSame((string)$card->getEmail(), (string)$data['shipping_email']);
+
+        $this->assertSame((string)$card->getFirstName(), (string)$data['first_name']);
+        $this->assertSame((string)$card->getLastName(), (string)$data['last_name']);
+        $this->assertSame((string)$card->getCompany(), (string)$data['company']);
+        $this->assertSame((string)$card->getCountry(), (string)$data['country']);
+        $this->assertSame((string)$card->getAddress1(), (string)$data['address1']);
+        $this->assertSame((string)$card->getAddress2(), (string)$data['address2']);
+        $this->assertSame((string)$card->getCity(), (string)$data['city']);
+        $this->assertSame((string)$card->getState(), (string)$data['state']);
+        $this->assertSame((string)$card->getPostcode(), (string)$data['zip']);
+        $this->assertSame((string)$card->getPhone(), (string)$data['phone']);
+        $this->assertSame((string)$card->getBillingFax(), (string)$data['fax']);
+        $this->assertSame((string)$card->getEmail(), (string)$data['email']);
     }
 }

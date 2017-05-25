@@ -59,17 +59,11 @@ class AuthorizeRequest extends AbstractRequest
         $data['currency'] = $this->getCurrency();
         
         $card = $this->getCard();
-
         $card->validate();
-        
-        if (!$card->getPostcode()) {
-            throw new InvalidCreditCardException("The postcode parameter is required");
-        }
 
-        $data['creditCardNumber'] = $card->getNumber();
-        $data['expirationDate'] = $card->getExpiryDate('my');
-        $data['cardSecurityCode'] = $card->getCvv();
-        $data['zipPostalCodeCard'] = $card->getPostcode();
+        $data['ccnumber'] = $card->getNumber();
+        $data['ccexp'] = $card->getExpiryDate('my');
+        $data['cvv'] = $card->getCvv();
     }
 
     /**
@@ -79,18 +73,18 @@ class AuthorizeRequest extends AbstractRequest
     {
         $card = $this->getCard();
 
-        $data['firstNameShipping'] = $card->getShippingFirstName();
-        $data['lastNameShipping'] = $card->getShippingLastName();
-        $data['companyShipping'] = $card->getShippingCompany();
-        $data['countryShipping'] = $card->getShippingCountry();
-        $data['addressShipping'] = $card->getShippingAddress1();
-        $data['addressContShipping'] = $card->getShippingAddress2();
-        $data['cityShipping'] = $card->getShippingCity();
-        $data['stateProvinceShipping'] = $card->getShippingState();
-        $data['zipPostalCodeShipping'] = $card->getShippingPostcode();
-        $data['phoneNumberShipping'] = $card->getShippingPhone();
-        $data['faxNumberShipping'] = $card->getShippingFax();
-        $data['emailAddressShipping'] = $card->getEmail();
+        $data['shipping_firstname'] = $card->getShippingFirstName();
+        $data['shipping_lastname'] = $card->getShippingLastName();
+        $data['shipping_company'] = $card->getShippingCompany();
+        $data['shipping_country'] = $card->getShippingCountry();
+        $data['shipping_address1'] = $card->getShippingAddress1();
+        $data['shipping_address2'] = $card->getShippingAddress2();
+        $data['shipping_city'] = $card->getShippingCity();
+        $data['shipping_state'] = $card->getShippingState();
+        $data['shipping_zip'] = $card->getShippingPostcode();
+        $data['shipping_phone'] = $card->getShippingPhone();
+        $data['shipping_fax'] = $card->getShippingFax();
+        $data['shipping_email'] = $card->getEmail();
     }
 
     /**
@@ -99,19 +93,19 @@ class AuthorizeRequest extends AbstractRequest
     protected function setCardHolderCredentials(Array &$data)
     {
         $card = $this->getCard();
-        
-        $data['firstNameCard'] = $card->getFirstName();
-        $data['lastNameCard'] = $card->getLastName();
-        $data['companyCard'] = $card->getCompany();
-        $data['countryCard'] = $card->getCountry();
-        $data['addressCard'] = $card->getAddress1();
-        $data['addressContCard'] = $card->getAddress2();
-        $data['cityCard'] = $card->getCity();
-        $data['stateProvinceCard'] = $card->getState();
-        $data['zipPostalCodeCard'] = $card->getPostcode();
-        $data['phoneNumberCard'] = $card->getPhone();
-        $data['faxNumberCard'] = $card->getBillingFax();
-        $data['emailAddressCard'] = $card->getEmail();
+
+        $data['first_name'] = $card->getFirstName();
+        $data['last_name'] = $card->getLastName();
+        $data['company'] = $card->getCompany();
+        $data['country'] = $card->getCountry();
+        $data['address1'] = $card->getAddress1();
+        $data['address2'] = $card->getAddress2();
+        $data['city'] = $card->getCity();
+        $data['state'] = $card->getState();
+        $data['zip'] = $card->getPostcode();
+        $data['phone'] = $card->getPhone();
+        $data['fax'] = $card->getBillingFax();
+        $data['email'] = $card->getEmail();
     }
     
 
