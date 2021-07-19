@@ -13,7 +13,7 @@ class CaptureRequest extends AuthorizeRequest
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getData()
     {

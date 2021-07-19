@@ -15,7 +15,7 @@ class VaultCreateRequest extends AuthorizeRequest
     }
     
     /**
-     * @return Array
+     * @return array
      * @throws InvalidCreditCardException
      * @throws InvalidRequestException
      */

@@ -1,6 +1,5 @@
 {
-    "name": "awolacademy/omnipay-total-apps-gateway",
-    "version": "dev-master",
+    "name": "knightar/omnipay-total-apps-gateway",
     "description": "Total Apps Gateway driver for the Omnipay PHP payment processing library",
     "keywords": [
         "gateway",
@@ -11,22 +10,24 @@
         "purchase",
         "mojopay"
     ],
-    "homepage": "https://github.com/awolacademy/omnipay-total-apps-gateway",
+    "homepage": "https://github.com/knightar/omnipay-total-apps-gateway",
     "license": "MIT",
     "authors": [
         {
             "name": "Brandon Lis",
-            "email": "knightar@gmail.com",
-            "homepage": "http://artician.net",
+            "email": "brandon@ihub.global",
+            "homepage": "http://ihub.global",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=5.3.0",
-        "omnipay/common": "~2.0"
+        "php": "^7.2|^8",
+        "omnipay/common": "^3",
+        "ext-xml": "*",
+        "ext-simplexml": "*"
     },
     "require-dev": {
-        "omnipay/tests": "~2.0"
+        "omnipay/tests": "^3"
     },
     "autoload": {
         "psr-4": {

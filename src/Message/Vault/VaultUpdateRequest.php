@@ -13,7 +13,7 @@ class VaultUpdateRequest extends VaultCreateRequest
     }
     
     /**
-     * @return Array
+     * @return array
      * @throws InvalidCreditCardException
      * @throws InvalidRequestException
      */

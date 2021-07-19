@@ -22,7 +22,7 @@ class AuthorizeRequest extends AbstractRequest
     }
 
     /**
-     * @return Array
+     * @return array
      * @throws InvalidCreditCardException
      * @throws InvalidRequestException
      */
@@ -52,7 +52,7 @@ class AuthorizeRequest extends AbstractRequest
     }
     
     /**
-     * @param Array $data
+     * @param array $data
      */
     protected function setCardCredentials(Array &$data)
     {
@@ -67,7 +67,7 @@ class AuthorizeRequest extends AbstractRequest
     }
 
     /**
-     * @param Array $data
+     * @param array $data
      */
     protected function setShippingCredentials(Array &$data)
     {
@@ -88,7 +88,7 @@ class AuthorizeRequest extends AbstractRequest
     }
 
     /**
-     * @param Array $data
+     * @param array $data
      */
     protected function setCardHolderCredentials(Array &$data)
     {
@@ -110,7 +110,7 @@ class AuthorizeRequest extends AbstractRequest
     
 
     /**
-     * @param Array $data
+     * @param array $data
      */
     protected function setBankCredentials(Array &$data)
     {
@@ -128,7 +128,7 @@ class AuthorizeRequest extends AbstractRequest
     }
 
     /**
-     * @param Array $data
+     * @param array $data
      */
     protected function setBankShippingCredentials(Array &$data)
     {
@@ -149,7 +149,7 @@ class AuthorizeRequest extends AbstractRequest
     }
 
     /**
-     * @param Array $data
+     * @param array $data
      */
     protected function setBankHolderCredentials(Array &$data)
     {

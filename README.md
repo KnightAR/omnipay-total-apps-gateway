@@ -3,14 +3,14 @@
 **Total Apps Gateway gateway for the Omnipay PHP payment processing library**
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.3+. This package implements Total Apps Gateway support for Omnipay.
+processing library for PHP 7.2+. This package implements Total Apps Gateway support for Omnipay.
 
 ## Install
 
 Via Composer
 
 ``` bash
-$ composer require awolacademy/omnipay-total-apps-gateway
+$ composer require league/omnipay:^3 knightar/omnipay-total-apps-gateway
 ```
 
 ## Usage
@@ -136,7 +136,7 @@ If you discover any security related issues, please email jablonski.kce@gmail.co
 
 ## Credits
 
-- [John Jablonski](https://github.com/jan-j)
+- [Brandon Lis](https://github.com/knightar)
 - [All Contributors](../../contributors)
 
 ## License

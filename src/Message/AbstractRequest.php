@@ -39,7 +39,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
     /**
      * Set the gateway username
      *
-     * @return AbstractRestRequest provides a fluent interface.
+     * @return AbstractRequest provides a fluent interface.
      */
     public function setUsername($value)
     {
@@ -59,8 +59,8 @@ abstract class AbstractRequest extends BaseAbstractRequest
     /**
     * Set the gateway password
     *
-    * @return string
-    */
+    * @return AbstractRequest
+     */
     public function setPassword($value)
     {
         return $this->setParameter('password', $value);
@@ -87,7 +87,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getBaseData()
     {
@@ -107,7 +107,11 @@ abstract class AbstractRequest extends BaseAbstractRequest
     public function sendData($data)
     {
         $headers      = array();
-        $httpResponse = $this->httpClient->get($this->getEndpoint() .'?' . http_build_query($data), $headers)->send();
+        $httpResponse = $this->httpClient->request(
+            'GET',
+            $this->getEndpoint() .'?' . http_build_query($data),
+            $headers
+        );
         return $this->createResponse($httpResponse->getBody());
     }
 
