@@ -17,11 +17,11 @@ class CaptureRequest extends AuthorizeRequest
      */
     public function getData()
     {
-        $this->validate('amount', 'transactionId');
+        $this->validate('amount', 'transactionReference');
 
         $data = $this->getBaseData();
 
-        $data['transactionid'] = $this->getTransactionId();
+        $data['transactionid'] = $this->getTransactionReference();
         $data['amount'] = $this->getAmount();
 
         return $data;
