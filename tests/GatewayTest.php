@@ -417,9 +417,9 @@ class GatewayTest extends GatewayTestCase
         //$this->assertSame("Customer Hash missing", $response->getMessage());
         $this->assertSame('Transaction was declined by processor.', $response->getCodeText());
         $this->assertSame('DECLINED', $response->getResponseText());
-        $this->assertSame('123', $response->getTransactionReference());
+        $this->assertSame('123', $response->getTransactionId());
         $this->assertSame(200, $response->getCode());
-        $this->assertNull($response->getTransactionId());
+        $this->assertNull($response->getTransactionReference());
         $this->assertNull($response->getCardReference());
         $this->assertSame('Transaction was declined by processor.; DECLINED', $response->getMessage());
     }
@@ -498,7 +498,7 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('SUCCESS', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionId());
+        $this->assertSame('3348271664', $response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
         $this->assertSame('784732899', $response->getCardReference());
     }
@@ -512,7 +512,7 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionId());
+        $this->assertSame('3348271664', $response->getTransactionReference());
         $this->assertSame(100, $response->getCode());
     }
 }

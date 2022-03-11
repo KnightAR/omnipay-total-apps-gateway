@@ -13,11 +13,6 @@ Via Composer
 $ composer require league/omnipay:^3 knightar/omnipay-total-apps-gateway
 ```
 
-### ! Backwards Compatibility Breakage Warning !
-Two methods after the v0.1.0 release reversed the transactionId() and transactionReference() methods to conform to
-the standardized omnipay methodology. When developing this from scratch it was mistaking used in reverse.
-Please fix test for breakage if you have used the old version in the past.
-
 ## Usage
 
 The following gateways are provided by this package:
