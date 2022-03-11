@@ -18,8 +18,8 @@ class CaptureRequestTest extends BaseRequestTest
 
         $this->request = new CaptureRequest($this->getHttpClient(), $this->getHttpRequest());
         $this->request->initialize(array_merge($this->getBaseOptions(), array(
-            'transactionReference' => '3244053957',
-            'amount'               => '12.00',
+            'transactionId' => '3244053957',
+            'amount'        => '12.00',
         )));
     }
 

@@ -34,7 +34,7 @@ class VaultDeleteRequest extends AuthorizeRequest
     
     /**
      * @param string $data
-     * @return Response
+     * @return DeleteResponse
      */
     protected function createResponse($data)
     {

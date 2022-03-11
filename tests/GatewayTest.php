@@ -63,13 +63,11 @@ class GatewayTest extends GatewayTestCase
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
 
         $this->gateway->setApiKey('m6ef44f261a4a1595cd377d3ca7b57b92');
-        $this->gateway->setUsername('abcdefg1234567');
-        $this->gateway->setPassword('6ef44f261a4a1595cd377d3ca7b57b92');
         $this->gateway->setTestMode(true);        
 
         $this->purchaseOptions = array(
             'amount'    => '10.00',
-            'orderId'   => '123',
+            'orderId'   => '',
             'card'      => $this->getValidCard(),
         );
 
@@ -97,9 +95,8 @@ class GatewayTest extends GatewayTestCase
         $this->purchaseOptionsRef = array(
             'amount'        => '10.00',
             'orderId'       => '123',
-            'cardReference' => '2108887363',
+            'cardReference' => '2108887363'
         );
-        
         
         /* ACH */
         $this->ACHCreateReferenceOptions = array(
@@ -127,6 +124,8 @@ class GatewayTest extends GatewayTestCase
 
     public function testGatewaySettersGetters()
     {
+        $this->gateway->setUsername('abcdefg1234567');
+        $this->gateway->setPassword('6ef44f261a4a1595cd377d3ca7b57b92');
         $this->assertSame('m6ef44f261a4a1595cd377d3ca7b57b92', $this->gateway->getApiKey());
         $this->assertSame('abcdefg1234567', $this->gateway->getUsername());
         $this->assertSame('6ef44f261a4a1595cd377d3ca7b57b92', $this->gateway->getPassword());
@@ -337,6 +336,45 @@ class GatewayTest extends GatewayTestCase
     }
     */
 
+    public function testLiveMode()
+    {
+        $this->assertSame($this->gateway, $this->gateway->setTestMode(false));
+
+        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $response = $this->gateway->createCard($this->cardCreateReferenceOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('Transaction was approved.', $response->getCodeText());
+        $this->assertSame('Customer Added', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
+        $this->assertNull($response->getTransactionId());
+        $this->assertSame('784732899', $response->getCardReference());
+    }
+
+
+    public function testCardCreatePasswordSuccess()
+    {
+        $this->gateway->setApiKey(null);
+        $this->gateway->setUsername('abcdefg1234567');
+        $this->gateway->setPassword('6ef44f261a4a1595cd377d3ca7b57b92');
+
+        $this->setMockHttpResponse('CardCreateSuccess.txt');
+        $response = $this->gateway->createCard($this->cardCreateReferenceOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('Transaction was approved.', $response->getCodeText());
+        $this->assertSame('Customer Added', $response->getResponseText());
+        $this->assertNull($response->getTransactionReference());
+        $this->assertSame(100, $response->getCode());
+        $this->assertNull($response->getTransactionId());
+        $this->assertSame('784732899', $response->getCardReference());
+    }
+
     public function testCardCreateSuccess()
     {
         $this->setMockHttpResponse('CardCreateSuccess.txt');
@@ -379,7 +417,7 @@ class GatewayTest extends GatewayTestCase
         //$this->assertSame("Customer Hash missing", $response->getMessage());
         $this->assertSame('Transaction was declined by processor.', $response->getCodeText());
         $this->assertSame('DECLINED', $response->getResponseText());
-        $this->assertNull($response->getTransactionReference());
+        $this->assertSame('123', $response->getTransactionReference());
         $this->assertSame(200, $response->getCode());
         $this->assertNull($response->getTransactionId());
         $this->assertNull($response->getCardReference());
@@ -460,7 +498,7 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('SUCCESS', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('3348271664', $response->getTransactionId());
         $this->assertSame(100, $response->getCode());
         $this->assertSame('784732899', $response->getCardReference());
     }
@@ -474,7 +512,7 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getMessage());
         $this->assertSame('APPROVED', $response->getResponseText());
-        $this->assertSame('3348271664', $response->getTransactionReference());
+        $this->assertSame('3348271664', $response->getTransactionId());
         $this->assertSame(100, $response->getCode());
     }
 }

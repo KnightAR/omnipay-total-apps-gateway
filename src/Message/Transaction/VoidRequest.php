@@ -17,11 +17,11 @@ class VoidRequest extends AuthorizeRequest
      */
     public function getData()
     {
-        $this->validate('transactionReference');
+        $this->validate('transactionId');
 
         $data = $this->getBaseData();
 
-        $data['transactionId'] = $this->getTransactionReference();
+        $data['transactionid'] = $this->getTransactionId();
 
         return $data;
     }

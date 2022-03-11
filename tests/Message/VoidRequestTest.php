@@ -18,7 +18,7 @@ class VoidRequestTest extends BaseRequestTest
 
         $this->request = new VoidRequest($this->getHttpClient(), $this->getHttpRequest());
         $this->request->initialize(array_merge($this->getBaseOptions(), array(
-            'transactionReference' => '3244053957',
+            'transactionId' => '3244053957',
         )));
     }
 
@@ -26,6 +26,6 @@ class VoidRequestTest extends BaseRequestTest
     {
         $data = $this->request->getData();
         $this->assertSame('void', (string)$data['type']);
-        $this->assertSame('3244053957', (string)$data['transactionId']);
+        $this->assertSame('3244053957', (string)$data['transactionid']);
     }
 }

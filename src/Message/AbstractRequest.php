@@ -86,19 +86,19 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     /**
-    * Get the gateway password
-    *
-    * @return string
-    */
+     * Get the gateway password
+     *
+     * @return string
+     */
     public function getPassword()
     {
         return $this->getParameter('password');
     }
 
     /**
-    * Set the gateway password
-    *
-    * @return AbstractRequest
+     * Set the gateway password
+     *
+     * @return AbstractRequest
      */
     public function setPassword($value)
     {
@@ -137,6 +137,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
         }
 
         $data = array();
+
         $data['type'] = $this->getType();
         if ($this->getApiKey()) {
             $data['security_key'] = $this->getApiKey();
@@ -148,16 +149,19 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     /**
-     * @param \SimpleXMLElement $data
+     * @param array $data
      * @return Response
      */
     public function sendData($data)
     {
         $httpResponse = $this->httpClient->request(
-            $this->getApiKey() ? 'POST' : 'GET',
+            isset($data['security_key']) ? 'POST' : 'GET',
             $this->getEndpoint() . ($this->getApiKey() ? '' : '?' . http_build_query($data)),
-            [],
-            $this->getApiKey() ? http_build_query($data) : ''
+            array_filter([
+                'User-Agent' => $this->getUserAgent(),
+                'Content-Type' => isset($data['security_key']) ? 'application/x-www-form-urlencoded' : ''
+            ]),
+            isset($data['security_key']) ? http_build_query(array_filter($data), '', '&') : ''
         );
         return $this->createResponse($httpResponse->getBody());
     }
@@ -181,5 +185,9 @@ abstract class AbstractRequest extends BaseAbstractRequest
     protected function createResponse($data)
     {
         return $this->response = new Response($this, $data);
+    }
+
+    protected function getUserAgent() {
+        return 'Omnipay (Omnipay-TotalAppsGateway/'.PHP_VERSION.')';
     }
 }

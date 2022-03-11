@@ -13,11 +13,18 @@ Via Composer
 $ composer require league/omnipay:^3 knightar/omnipay-total-apps-gateway
 ```
 
+### ! Backwards Compatibility Breakage Warning !
+Two methods after the v0.1.0 release reversed the transactionId() and transactionReference() methods to conform to
+the standardized omnipay methodology. When developing this from scratch it was mistaking used in reverse.
+Please fix test for breakage if you have used the old version in the past.
+
 ## Usage
 
 The following gateways are provided by this package:
 
  * Total Apps Gateway
+
+####This driver supports Omnipay v3. To use the outdated v2 package see the v.0.1.0 release.
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay) repository.
 
@@ -32,9 +39,16 @@ This driver supports following transaction types:
 Gateway instantiation:
 ``` PHP
     $gateway = Omnipay::create('TotalAppsGateway');
-    $gateway->setProcessorId('abcdefg1234567');
-    $gateway->setToken('6ef44f261a4a1595cd377d3ca7b57b92');
-    $gateway->setTestMode(true);
+    $gateway->setApiKey('6457Thfj624V5r7WUwc5v6a68Zsd6YEm');
+```
+
+`purchase` example
+``` PHP
+    $formData = array('number' => '4111111111111111', 'expiryMonth' => '10', 'expiryYear' => '2025', 'cvv' => '123');
+    $gateway->purchase([
+        'amount' => '10.00',
+        'card'   => $formData
+    ]);
 ```
 
 Driver also supports paying using store cards in the customer vault using `cardReference` instead of `card`, 
@@ -42,11 +56,11 @@ use the vault functions with the `cardReference` parameter.
 
 This driver also supports storing customer data in Total Apps Gateway's customer vault:
 
-- createCard($options) - Create a entry in the customer vault
+- createCard($options) - Create an entry in the customer vault
 - updateCard($options) - Update an entry in the customer vault
 - deleteCard($options) - Delete an entry in a customer vault
 ``` PHP
-    $formData = array('number' => '4242424242424242', 'expiryMonth' => '8', 'expiryYear' => '2017', 'cvv' => '123');
+    $formData = array('number' => '4111111111111111', 'expiryMonth' => '10', 'expiryYear' => '2025', 'cvv' => '123');
     
     $response = $gateway->createCard([
         'card'          => $formData
@@ -54,40 +68,17 @@ This driver also supports storing customer data in Total Apps Gateway's customer
     
     $cardReference = $response->getCardReference();
 ```
-- listCards - Listing customer vault records by criteria
-``` PHP
-    # Each criteria are optional, no criteria will return no records
-    $response = $gateway->listCards([
-        'cardReference' => '', # The hash to identify the customer in the vault
-        'firstName'     => '', # Portion of cardholder's first name.
-        'lastName'      => '', # Portion of cardholder's last name.
-        'email'         => '', # Portion of billing email address.
-        'last4cc'       => ''  # Last 4 digits of credit card number.
-    ]);
-    $response_rows = $response->getResponse();
-```
 
-`cardReference` can be used in the authorize, purchase, and refund requests:
+`cardReference` can be used to authorize, purchase, and refund requests:
 ``` PHP
     $gateway->purchase([
         'amount'        => '10.00',
         'cardReference' => '1234567890'
     ]);
 ```
-This driver also supports subscription management which can be accessed using:
- 
-- subscription_add($options) - Add a subscription
-- subscription_delete($options) - Delete a subscription
-``` PHP
-    # As an example we will add a subscription the starts on 01/04/2017
-    $gateway->subscription_add([
-        'cardReference'          => '1234567890',
-        'planId'                 => '1234567890',
-        'subscriptionStartDay'   => '01',
-        'subscriptionStartMonth' => '04',
-        'subscriptionStartYear'  => '2017'
-    ]);
-```
+
+This driver also support ACH related transactions using the \Omnipay\TotalAppsGateway\ACH class to validate ACH details,
+and `createACH`, `updateACH` methods in the Gateway. Your merchant account must have this approved and activated.
 
 API Calls on the TODO list which will be implemented eventually: 
 
@@ -113,7 +104,7 @@ If you want to keep up to date with release anouncements, discuss ideas for the 
 or ask more detailed questions, there is also a [mailing list](https://groups.google.com/forum/#!forum/omnipay) which
 you can subscribe to.
 
-If you believe you have found a bug, please report it using the [GitHub issue tracker](https://github.com/awolacademy/omnipay-total-apps-gateway/issues),
+If you believe you have found a bug, please report it using the [GitHub issue tracker](https://github.com/knightar/omnipay-total-apps-gateway/issues),
 or better yet, fork the library and submit a pull request.
 
 ## Change log

@@ -13,7 +13,7 @@ class AuthorizeCardReferenceRequestTest extends AuthorizeRequestTest
         $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
         $this->request->initialize(array_merge($this->getOptions(), array(
             'card'          => null,
-            'cardReference' => '1376993339'
+            'cardReference' => '1376993339',
         )));
     }
 
@@ -24,8 +24,7 @@ class AuthorizeCardReferenceRequestTest extends AuthorizeRequestTest
         $this->assertNull($this->request->getCard());
         
         $this->assertSame('auth', (string)$data['type']);
-        
-        $this->assertSame('123', (string)$data['orderid']);
+
         $this->assertSame('12.00', (string)$data['amount']);
         $this->assertSame('1376993339', (string)$data['customer_vault_id']);
     }

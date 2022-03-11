@@ -32,7 +32,7 @@ class AuthorizeRequest extends AbstractRequest
         $this->validate('amount');
         $data = $this->getBaseData();
 
-        $data['orderid'] = $this->getTransactionId();
+        $data['orderid'] = $this->getTransactionReference();
         $data['order_description'] = $this->getDescription();
         $data['amount'] = $this->getAmount();
 

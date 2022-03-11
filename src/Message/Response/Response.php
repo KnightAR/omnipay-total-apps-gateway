@@ -95,7 +95,7 @@ class Response extends AbstractResponse
      *
      * @return string
      */
-    public function getTransactionId()
+    public function getTransactionReference()
     {
         return isset($this->data->orderid) && !empty($this->data->orderid) ?
             (string)$this->data->orderid : null;
@@ -106,7 +106,7 @@ class Response extends AbstractResponse
      *
      * @return null|string
      */
-    public function getTransactionReference()
+    public function getTransactionId()
     {
         return isset($this->data->transactionid) && !empty($this->data->transactionid) ?
             (string)$this->data->transactionid : null;
