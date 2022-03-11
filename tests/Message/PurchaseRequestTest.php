@@ -8,7 +8,7 @@ class PurchaseRequestTest extends AuthorizeRequestTest
 {
     protected $expectedType = 'sale';
     
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

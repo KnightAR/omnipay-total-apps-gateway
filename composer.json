@@ -27,7 +27,8 @@
         "ext-simplexml": "*"
     },
     "require-dev": {
-        "omnipay/tests": "^3"
+        "omnipay/tests": "^4.1",
+        "guzzlehttp/guzzle": "^7.0.1"
     },
     "autoload": {
         "psr-4": {

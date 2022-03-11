@@ -3,7 +3,9 @@
 namespace Omnipay\TotalAppsGateway;
 
 use Omnipay\Common\AbstractGateway;
-use Guzzle\Http\Client as HttpClient;
+use Omnipay\Common\Http\Client;
+use Omnipay\Common\Http\ClientInterface;
+use Omnipay\TotalAppsGateway\Message\AbstractRequest;
 
 /**
  * TotalAppsGateway Gateway
@@ -11,23 +13,18 @@ use Guzzle\Http\Client as HttpClient;
 class Gateway extends AbstractGateway
 {
     /**
-     * @codeCoverageIgnore
      * Get the global default HTTP client.
      *
-     * @return HttpClient
+     * @return ClientInterface
      */
     protected function getDefaultHttpClient()
     {
-        return new HttpClient(
-            '',
-            array(
-                'curl.options' => array(
-                    CURLOPT_CONNECTTIMEOUT => 60,
-                    CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST => false,
-                ),
-            )
-        );
+        return new Client();
+//        'curl.options' => array(
+//        CURLOPT_CONNECTTIMEOUT => 60,
+//        CURLOPT_SSL_VERIFYPEER => false,
+//        CURLOPT_SSL_VERIFYHOST => false,
+//    ),
     }
     
     /**
@@ -46,12 +43,11 @@ class Gateway extends AbstractGateway
     public function getDefaultParameters()
     {
         return array(
-            'username' => '',
-            'password' => '',
+            'apiKey' => null,
             'testMode' => false
         );
     }
-    
+
     /**
      * Get the gateway username
      *
@@ -66,7 +62,7 @@ class Gateway extends AbstractGateway
      * Set the gateway username
      *
      * @param string username
-     * @return interface.
+     * @return Gateway.
      */
     public function setUsername($value)
     {
@@ -76,12 +72,53 @@ class Gateway extends AbstractGateway
     /**
      * Set the getway password
      *
-     * @param string password
-     * @return interface
+     * @param $value
+     * @return Gateway
      */
     public function setPassword($value)
     {
         return $this->setParameter('password', $value);
+    }
+
+
+    /**
+     * Get the gateway API Key.
+     *
+     * Authentication is by means of a single secret API key set as
+     * the apiKey parameter when creating the gateway object.
+     *
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->getParameter('apiKey');
+    }
+
+    /**
+     * Set the gateway API Key.
+     *
+     * Authentication is by means of a single secret API key set as
+     * the apiKey parameter when creating the gateway object.
+     *
+     * Stripe accounts have test-mode API keys as well as live-mode
+     * API keys. These keys can be active at the same time. Data
+     * created with test-mode credentials will never hit the credit
+     * card networks and will never cost anyone money.
+     *
+     * Unlike some gateways, there is no test mode endpoint separate
+     * to the live mode endpoint, the Stripe API endpoint is the same
+     * for test and for live.
+     *
+     * Setting the testMode flag on this gateway has no effect.  To
+     * use test mode just use your test mode API key.
+     *
+     * @param string $value
+     *
+     * @return self provides a fluent interface.
+     */
+    public function setApiKey($value)
+    {
+        return $this->setParameter('apiKey', $value);
     }
 
     /**
@@ -116,7 +153,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return Message\Transaction\AuthorizeRequest
+     * @return Message\Transaction\AuthorizeRequest|\Omnipay\Common\Message\AbstractRequest
      * Authorize = auth
      */
     public function authorize(array $parameters = array())
@@ -126,7 +163,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return Message\Transaction\PurchaseRequest
+     * @return Message\Transaction\PurchaseRequest|\Omnipay\Common\Message\AbstractRequest
      * Purchase = sale
      */
     public function purchase(array $parameters = array())
@@ -136,7 +173,7 @@ class Gateway extends AbstractGateway
     
     /**
      * @param array $parameters
-     * @return Message\Transaction\CreditRequest
+     * @return Message\Transaction\CreditRequest|\Omnipay\Common\Message\AbstractRequest
      * Credit = credit
      */
     public function credit(array $parameters = array())
@@ -146,7 +183,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return Message\Transaction\RefundRequest
+     * @return Message\Transaction\RefundRequest|\Omnipay\Common\Message\AbstractRequest
      * Refund = refund
      */
     public function refund(array $parameters = array())
@@ -156,7 +193,7 @@ class Gateway extends AbstractGateway
     
     /**
      * @param array $parameters
-     * @return Message\Vault\VaultCreateRequest
+     * @return Message\Vault\VaultCreateRequest|\Omnipay\Common\Message\AbstractRequest
      * Vault Create = auth
      */
     public function createCard(array $parameters = array())
@@ -166,7 +203,7 @@ class Gateway extends AbstractGateway
     
     /**
      * @param array $parameters
-     * @return Message\Vault\VaultDeleteRequest
+     * @return Message\Vault\VaultDeleteRequest|\Omnipay\Common\Message\AbstractRequest
      * Vault Delete = delete
      */
     public function deleteCard(array $parameters = array())
@@ -176,7 +213,7 @@ class Gateway extends AbstractGateway
     
     /**
      * @param array $parameters
-     * @return Message\Vault\VaultUpdateRequest
+     * @return Message\Vault\VaultUpdateRequest|\Omnipay\Common\Message\AbstractRequest
      * Vault Update = update
      */
     public function updateCard(array $parameters = array())
@@ -186,7 +223,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return Message\Transaction\CaptureRequest
+     * @return Message\Transaction\CaptureRequest|\Omnipay\Common\Message\AbstractRequest
      * Capture = capture
      */
     public function capture(array $parameters = array())
@@ -196,7 +233,7 @@ class Gateway extends AbstractGateway
     
     /**
      * @param array $parameters
-     * @return Message\Transaction\VoidRequest
+     * @return Message\Transaction\VoidRequest|\Omnipay\Common\Message\AbstractRequest
      * Void = void
      */
     public function void(array $parameters = array())
@@ -207,7 +244,7 @@ class Gateway extends AbstractGateway
     /**
      * DEPRECATED: Use createCard() with bankAccountPayee argument
      * @param array $parameters
-     * @return Message\Vault\VaultCreateRequest
+     * @return Message\Vault\VaultCreateRequest|\Omnipay\Common\Message\AbstractRequest
      * Vault ACH Create = add_customer
      */
     public function createACH(array $parameters = array())
@@ -218,7 +255,7 @@ class Gateway extends AbstractGateway
     /**
      * DEPRECATED: Use updateCard() with bankAccountPayee argument
      * @param array $parameters
-     * @return Message\Vault\VaultUpdateRequest
+     * @return Message\Vault\VaultUpdateRequest|\Omnipay\Common\Message\AbstractRequest
      * Vault ACH Update = update_customer
      */
     public function updateACH(array $parameters = array())
@@ -229,7 +266,7 @@ class Gateway extends AbstractGateway
     /**
      * DEPRECATED: Use deleteCard() with bankAccountPayee argument
      * @param array $parameters
-     * @return Message\Vault\VaultDeleteRequest
+     * @return Message\Vault\VaultDeleteRequest|\Omnipay\Common\Message\AbstractRequest
      * Vault ACH Delete = delete_customer
      */
     public function deleteACH(array $parameters = array())

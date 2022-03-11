@@ -4,7 +4,6 @@ namespace Omnipay\TotalAppsGateway\Message;
 
 use Omnipay\Common\Message\AbstractRequest as BaseAbstractRequest;
 use Omnipay\TotalAppsGateway\Message\Response\Response;
-use Omnipay\TotalAppsGateway\ACH;
 
 /**
  * Abstract Request
@@ -25,6 +24,46 @@ abstract class AbstractRequest extends BaseAbstractRequest
      * @return string
      */
     abstract public function getType();
+
+    /**
+     * Get the gateway API Key.
+     *
+     * Authentication is by means of a single secret API key set as
+     * the apiKey parameter when creating the gateway object.
+     *
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->getParameter('apiKey');
+    }
+
+    /**
+     * Set the gateway API Key.
+     *
+     * Authentication is by means of a single secret API key set as
+     * the apiKey parameter when creating the gateway object.
+     *
+     * Stripe accounts have test-mode API keys as well as live-mode
+     * API keys. These keys can be active at the same time. Data
+     * created with test-mode credentials will never hit the credit
+     * card networks and will never cost anyone money.
+     *
+     * Unlike some gateways, there is no test mode endpoint separate
+     * to the live mode endpoint, the Stripe API endpoint is the same
+     * for test and for live.
+     *
+     * Setting the testMode flag on this gateway has no effect.  To
+     * use test mode just use your test mode API key.
+     *
+     * @param string $value
+     *
+     * @return AbstractRequest provides a fluent interface.
+     */
+    public function setApiKey($value)
+    {
+        return $this->setParameter('apiKey', $value);
+    }
 
     /**
      * Get the gateway username
@@ -65,12 +104,12 @@ abstract class AbstractRequest extends BaseAbstractRequest
     {
         return $this->setParameter('password', $value);
     }
-    
+
     public function getBankAccountPayee()
     {
         return $this->getParameter('bankAccountPayee');
     }
-    
+
     public function setBankAccountPayee($value)
     {
         return $this->setParameter('bankAccountPayee', $value);
@@ -91,26 +130,34 @@ abstract class AbstractRequest extends BaseAbstractRequest
      */
     public function getBaseData()
     {
-        $this->validate('username', 'password');
-        
+        if ($this->getApiKey()) {
+            $this->validate('apiKey');
+        } else {
+            $this->validate('username', 'password');
+        }
+
         $data = array();
         $data['type'] = $this->getType();
-        $data['username'] = $this->getUsername();
-        $data['password'] = $this->getPassword();
+        if ($this->getApiKey()) {
+            $data['security_key'] = $this->getApiKey();
+        } else {
+            $data['username'] = $this->getUsername();
+            $data['password'] = $this->getPassword();
+        }
         return $data;
     }
 
     /**
-     * @param SimpleXMLElement $data
+     * @param \SimpleXMLElement $data
      * @return Response
      */
     public function sendData($data)
     {
-        $headers      = array();
         $httpResponse = $this->httpClient->request(
-            'GET',
-            $this->getEndpoint() .'?' . http_build_query($data),
-            $headers
+            $this->getApiKey() ? 'POST' : 'GET',
+            $this->getEndpoint() . ($this->getApiKey() ? '' : '?' . http_build_query($data)),
+            [],
+            $this->getApiKey() ? http_build_query($data) : ''
         );
         return $this->createResponse($httpResponse->getBody());
     }

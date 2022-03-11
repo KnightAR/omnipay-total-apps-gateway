@@ -4,3 +4,4 @@ composer.lock
 vendor
 .coveralls.yml
 phpunit.xml
+.phpunit.result.cache

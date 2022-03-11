@@ -3,6 +3,8 @@
 namespace Omnipay\TotalAppsGateway\Message\Vault;
 
 use Omnipay\TotalAppsGateway\Message\Transaction\AuthorizeRequest;
+use Omnipay\Common\Exception\InvalidCreditCardException;
+use Omnipay\Common\Exception\InvalidRequestException;
 
 class VaultCreateRequest extends AuthorizeRequest
 {

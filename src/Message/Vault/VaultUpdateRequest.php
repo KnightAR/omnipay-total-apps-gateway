@@ -2,6 +2,9 @@
 
 namespace Omnipay\TotalAppsGateway\Message\Vault;
 
+use Omnipay\Common\Exception\InvalidCreditCardException;
+use Omnipay\Common\Exception\InvalidRequestException;
+
 class VaultUpdateRequest extends VaultCreateRequest
 {
     /**

@@ -4,6 +4,8 @@ namespace Omnipay\TotalAppsGateway\Message\Vault;
 
 use Omnipay\TotalAppsGateway\Message\Transaction\AuthorizeRequest;
 use Omnipay\TotalAppsGateway\Message\Response\DeleteResponse;
+use Omnipay\Common\Exception\InvalidCreditCardException;
+use Omnipay\Common\Exception\InvalidRequestException;
 
 class VaultDeleteRequest extends AuthorizeRequest
 {

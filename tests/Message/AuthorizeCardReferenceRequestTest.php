@@ -6,7 +6,7 @@ use Omnipay\TotalAppsGateway\Message\Transaction\AuthorizeRequest;
 
 class AuthorizeCardReferenceRequestTest extends AuthorizeRequestTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

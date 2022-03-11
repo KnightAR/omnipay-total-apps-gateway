@@ -56,12 +56,13 @@ class GatewayTest extends GatewayTestCase
         );
     }
     
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
 
+        $this->gateway->setApiKey('m6ef44f261a4a1595cd377d3ca7b57b92');
         $this->gateway->setUsername('abcdefg1234567');
         $this->gateway->setPassword('6ef44f261a4a1595cd377d3ca7b57b92');
         $this->gateway->setTestMode(true);        
@@ -126,6 +127,7 @@ class GatewayTest extends GatewayTestCase
 
     public function testGatewaySettersGetters()
     {
+        $this->assertSame('m6ef44f261a4a1595cd377d3ca7b57b92', $this->gateway->getApiKey());
         $this->assertSame('abcdefg1234567', $this->gateway->getUsername());
         $this->assertSame('6ef44f261a4a1595cd377d3ca7b57b92', $this->gateway->getPassword());
         $this->assertSame(true, $this->gateway->getTestMode());

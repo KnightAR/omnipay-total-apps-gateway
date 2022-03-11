@@ -16,7 +16,7 @@ class ACHTest extends TestCase
      */
     protected $ach;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -44,72 +44,58 @@ class ACHTest extends TestCase
         $this->assertSame(null, $this->ach->validate());
     }
 
-    /**
-     * @expectedException \Omnipay\TotalAppsGateway\InvalidACHException
-     * @expectedExceptionMessage The bank account type is not in the supported list.
-     */
     public function testValidateBankAccountTypeRequired()
     {
+        $this->expectExceptionMessage("The bank account type is not in the supported list.");
+        $this->expectException(\Omnipay\TotalAppsGateway\InvalidACHException::class);
         $this->ach->setBankAccountType(null);
         $this->ach->validate();
     }
 
-    /**
-     * @expectedException \Omnipay\TotalAppsGateway\InvalidACHException
-     * @expectedExceptionMessage The bank holder type is not in the supported list.
-     */
     public function testValidateBankHolderAccountTypeRequired()
     {
+        $this->expectExceptionMessage("The bank holder type is not in the supported list.");
+        $this->expectException(\Omnipay\TotalAppsGateway\InvalidACHException::class);
         $this->ach->setBankHolderAccountType(null);
         $this->ach->validate();
     }
 
-    /**
-     * @expectedException \Omnipay\TotalAppsGateway\InvalidACHException
-     * @expectedExceptionMessage The account number is required.
-     */
     public function testValidateAccountNumberRequired()
     {
+        $this->expectExceptionMessage("The account number is required.");
+        $this->expectException(\Omnipay\TotalAppsGateway\InvalidACHException::class);
         $this->ach->setAccountNumber(null);
         $this->ach->validate();
     }
 
-    /**
-     * @expectedException \Omnipay\TotalAppsGateway\InvalidACHException
-     * @expectedExceptionMessage The routing number is required.
-     */
     public function testValidateRountingNumberRequired()
     {
+        $this->expectExceptionMessage("The routing number is required.");
+        $this->expectException(\Omnipay\TotalAppsGateway\InvalidACHException::class);
         $this->ach->setRoutingNumber(null);
         $this->ach->validate();
     }
 
-    /**
-     * @expectedException \Omnipay\TotalAppsGateway\InvalidACHException
-     * @expectedExceptionMessage The account name is required.
-     */
     public function testValidateAccountName()
     {
+        $this->expectExceptionMessage("The account name is required.");
+        $this->expectException(\Omnipay\TotalAppsGateway\InvalidACHException::class);
         $this->ach->setName(null);
         $this->ach->validate();
     }
 
-    /**
-     * @expectedException \Omnipay\TotalAppsGateway\InvalidACHException
-     * @expectedExceptionMessage The bank name is required.
-     */
     public function testValidateNumber()
     {
+        $this->expectExceptionMessage("The bank name is required.");
+        $this->expectException(\Omnipay\TotalAppsGateway\InvalidACHException::class);
         $this->ach->setBankName(null);
         $this->ach->validate();
     }
 
-    /**
-     * @expectedException \Omnipay\TotalAppsGateway\InvalidACHException
-     * @expectedExceptionMessage The value parameter is required
-     */
     public function testValidateParamatersFailure()
     {
+        $this->expectExceptionMessage("The value parameter is required");
+        $this->expectException(\Omnipay\TotalAppsGateway\InvalidACHException::class);
         $this->ach->validate('value');
     }
 
@@ -487,14 +473,14 @@ class ACHTest extends TestCase
     public function testGetSupportedAccountTypes()
     {
         $types = array_flip($this->ach->getSupportedAccountType());
-        $this->assertInternalType('array', $types);
+        $this->assertIsArray($types);
         $this->assertArrayHasKey(ACH::ACCOUNT_TYPE_CHECKING, $types);
     }
 
     public function testGetSupportedHolderAccountTypes()
     {
         $types = array_flip($this->ach->getSupportedHolderAccountType());
-        $this->assertInternalType('array', $types);
+        $this->assertIsArray($types);
         $this->assertArrayHasKey(ACH::ACCOUNT_HOLDER_TYPE_BUSINESS, $types);
     }
 }

@@ -23,7 +23,7 @@ class AuthorizeRequestTest extends BaseRequestTest
         ));
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

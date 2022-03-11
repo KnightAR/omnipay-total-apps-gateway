@@ -5,6 +5,7 @@ namespace Omnipay\TotalAppsGateway\Message\Transaction;
 use Omnipay\Common\Exception\InvalidCreditCardException;
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\TotalAppsGateway\Message\AbstractRequest;
+use Omnipay\TotalAppsGateway\Message\Response\Response;
 
 /**
  * Authorize Request
