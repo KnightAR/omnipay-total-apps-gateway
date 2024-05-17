@@ -130,7 +130,7 @@ class Response extends AbstractResponse
             return null;
         }
 
-        return implode($errors, '; ');
+        return implode('; ', $errors);
     }
         
     /**
